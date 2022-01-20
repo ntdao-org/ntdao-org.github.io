@@ -310,8 +310,7 @@ select {
   align-items: flex-start;
   padding: 20px;
 
-  width: 350px;
-  height: 100px;
+  width: 240px;
   left: 510px;
   top: 780px;
 
@@ -329,17 +328,31 @@ select {
   font-weight: bold;
   font-size: 26px;
   line-height: 160%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  color: #855126;
+  /* or 51px */
+}
+
+.funding-text-w-p {
+  align-self: end;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 160%;
+  margin-top: 0px;
+  margin-bottom: 0px;
   /* or 51px */
 }
 
 .funding-btn-div {
   position: absolute;
   left: 0%;
-  right: 0%;
+  right: 1%;
   bottom: 0%;
   width: 930px;
   height: 80px;
-  background: #3d2817;
+  background: #3d281780;
   box-shadow: 0px 0px 20px rgba(61, 40, 23, 0.5);
 
   display: flex;
@@ -352,9 +365,10 @@ select {
   font-size: 26px;
   line-height: 160%;
   width: 100%;
+  height: 100%;
   text-align: center;
   border: 0;
-  color: white;
+  color: var(--primary-color);
 }
 
 .modal-popup {

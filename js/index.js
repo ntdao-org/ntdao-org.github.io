@@ -70,13 +70,14 @@ async function startApp() {
 
     if (chainId == 8217 || chainId == 1001) {
       // if (chainId == 4) {
-      $("#div-network").show();
-      $("#network-info").hide();
+      // $("#div-network").show();
+      // $("#network-info").hide();
       $(".current-network").html(networkList[chainId]);
       await getAccount();
     } else {
-      $("#div-network").hide();
-      $("#network-info").show();
+      // $("#div-network").hide();
+      // $("#network-info").show();
+      $(".my-address").html("지갑이 Klaytn 네트웍에 연결되어있지 않습니다.");
     }
 
     // initializeClock();
@@ -120,7 +121,7 @@ async function getAccount() {
     $(".description").html(
       "<p>모금에 참여하려면 지갑 연결 버튼을 클릭하여 지갑을 연결하세요..</p>"
     );
-    $(".my-address").html("");
+    $(".my-address").html("지갑에서 Klaytn 네트웍을 선택하세요");
   }
 }
 
