@@ -45,9 +45,10 @@ function loadWeb3() {
   if (typeof window.ethereum !== "undefined") {
     window.web3 = new Web3(window.ethereum);
   } else {
-    window.web3 = new Web3(
-      "https://mainnet.infura.io/v3/302b2ccfd49a40d480567a132cb7eb1d"
-    );
+    window.web3 = new Web3(window.caver);
+    // window.web3 = new Web3(
+    //   "https://mainnet.infura.io/v3/302b2ccfd49a40d480567a132cb7eb1d"
+    // );
   }
 }
 
@@ -126,11 +127,11 @@ async function getAccount() {
 }
 
 function connectWallet() {
-  if (typeof ethereum === "undefined") {
+  if (typeof window.ethereum === "undefined") {
     return showMsg(noAddrMsg);
   }
 
-  ethereum
+  window.ethereum
     .request({ method: "eth_requestAccounts" })
     .then((accounts) => {
       myAddr = accounts[0];
