@@ -79,7 +79,7 @@
 
     <link rel="stylesheet" type="text/css" href="./css/index.css" />
   </head>
-  <body>
+  <body style="background-image: url(./asset/bg-repeat.jpg)">
     <div class="body-div" id="body-div">
       <div id="minting-loading"><div class="spinner"></div></div>
       <!-- <div class="modal-popup">
@@ -92,10 +92,57 @@
           </div>
         </div>
       </div> -->
+      <div class="header-div">
+        <img src="./asset/description-img1.jpg" width="50px" height="50px" />
+        <div class="header-right-div">
+          <a
+            href="https://discord.gg/NUWSxvNHv4"
+            class="social-btn"
+            target="_blank"
+          >
+            <img width="40" height="40" src="./asset/icon-discord.png" />
+          </a>
+          <a
+            href="https://discord.gg/NUWSxvNHv4"
+            class="social-btn"
+            target="_blank"
+          >
+            <img width="40" height="40" src="./asset/icon-twitter.png" />
+          </a>
+          <button
+            id="connect-btn"
+            class="button-small"
+            style="margin-left: 10px; display: none"
+            onclick="connectWallet()"
+          >
+            지갑 연결
+          </button>
+          <button
+            id="my-addr-btn"
+            class="button-small my-address"
+            style="margin-left: 10px; display: block"
+          ></button>
+        </div>
+      </div>
+      <!-- Funding popup  -->
+      <div class="modal-popup">
+        <div class="modal_body">
+          <div id="funding-loading"><div class="spinner"></div></div>
+          <div>
+            <p class="title_sub_p">DAO 참여하기</p>
+            <button class="btn-close-popup button-small">닫기</button>
+          </div>
+          <div>
+            <div>
+              <button class="button-text-large">경매 참여</button>
+            </div>
+          </div>
+        </div>
+      </div>
       <div
         id="banner_div"
         class="top-div"
-        style="background-image: url('./asset/banner1.jpg'); height: 650px"
+        style="background-image: url('./asset/banner1.jpg'); height: 550px"
       >
         <!-- <img id="bg-image" width="100%" height="650px" src="./asset/banner1.jpg"/> -->
         <div id="div-countdown" style="display: none">
@@ -109,7 +156,7 @@
         </div>
       </div>
       <div class="content-div">
-        <div class="frame-common" style="display: none">
+        <!-- <div class="frame-common" style="display: none">
           <div id="div-network" style="margin-bottom: 20px">
             Current Network :
             <span class="current-network" style="margin-right: 10px"></span>
@@ -139,7 +186,7 @@
               <span class="nft-address" style="margin-right: 10px"></span>
             </div>
           </div>
-        </div>
+        </div> -->
         <div style="margin-top: 80px; display: inline-flex">
           <div class="funding-state-div">
             <p class="title_sub_p">목표 모금 금액</p>
@@ -412,7 +459,7 @@
       </div>
     </div>
     <div class="funding-btn-div">
-      <button class="button-funding">참여하기</button>
+      <button class="button-funding btn-open-popup">참여하기</button>
     </div>
     <!-- Script -->
     <script src="./js/1.2.11-web3-min.js"></script>

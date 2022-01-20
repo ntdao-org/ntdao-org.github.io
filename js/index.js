@@ -99,11 +99,13 @@ async function getAccount() {
       $(".my-address").html(getLink(myAddr, chainId));
       $("#content_body").show();
       $("#connect-btn").hide();
+      $("#my-addr-btn").show();
     } else {
       console.log("No Klaytn account is available!");
       $("#div-myaddress").hide();
       $("#content_body").hide();
       $("#connect-btn").show();
+      $("#my-addr-btn").hide();
 
       $(".description").html(
         "<p>모금에 참여하려면 지갑 연결 버튼을 클릭하여 지갑을 연결하세요..</p>"
@@ -114,6 +116,7 @@ async function getAccount() {
     $("#div-myaddress").hide();
     $("#content_body").hide();
     $("#connect-btn").show();
+    $("#my-addr-btn").hide();
     $(".description").html(
       "<p>모금에 참여하려면 지갑 연결 버튼을 클릭하여 지갑을 연결하세요..</p>"
     );
@@ -203,3 +206,41 @@ function showBanner() {
     loop_cnt == banner_img.length ? (loop_cnt = 0) : loop_cnt;
   }, 5000);
 }
+
+const modal = document.querySelector(".modal-popup");
+const btnOpenPopup = document.querySelector(".btn-open-popup");
+const btnClosePopup = document.querySelector(".btn-close-popup");
+
+btnOpenPopup.addEventListener("click", () => {
+  modal.classList.toggle("show");
+  const target = document.getElementById("bonus-claim-btn");
+  target.disabled = true;
+
+  if (modal.classList.contains("show")) {
+    body.style.overflow = "hidden";
+  }
+  showBonusClaimCardList();
+});
+
+btnClosePopup.addEventListener("click", () => {
+  modal.classList.toggle("show");
+  bonus_claim_complete.innerHTML = "";
+
+  const target = document.getElementById("bonus-claim-btn");
+  target.disabled = true;
+
+  if (!modal.classList.contains("show")) {
+    body.style.overflow = "auto";
+  }
+});
+
+modal.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    modal.classList.toggle("show");
+    bonus_claim_complete.innerHTML = "";
+
+    if (!modal.classList.contains("show")) {
+      body.style.overflow = "auto";
+    }
+  }
+});

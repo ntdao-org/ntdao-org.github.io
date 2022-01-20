@@ -68,7 +68,7 @@ button {
   padding-bottom: 10px;
   color: var(--primary-color);
   /* font-family: "Fuzzy Bubbles", cursive; */
-  font-family: "MuseumClassic", sans-serif;
+  font-family: "Mu국립박물관문화재단클래식MseumClassic", sans-serif;
 }
 
 button:hover {
@@ -89,6 +89,40 @@ button[disabled] {
   line-height: 160%;
   text-align: right;
   border: 0;
+  font-family: "국립박물관문화재단클래식M";
+}
+
+.button-text-large {
+  font-size: 28px;
+  line-height: 160%;
+  width: 100%;
+  text-align: center;
+  border: 0;
+  background-color: var(--primary-color);
+  color: white;
+  font-family: "국립박물관문화재단클래식M";
+}
+
+.button-small {
+  font-size: 14px;
+  line-height: 160%;
+  text-align: right;
+  border: 0;
+  border-radius: 100px;
+  padding-left: 30px;
+  padding-right: 30px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  color: var(--buton-font-color);
+  background-color: var(--primary-color);
+  font-family: "국립박물관문화재단클래식M";
+}
+
+.social-btn {
+  width: 40px;
+  height: 40px;
+  margin-right: 8px;
+  display: inline-block;
 }
 
 p {
@@ -168,9 +202,6 @@ select {
   overflow: auto;
   scrollbar-width: none;
 }
-.body-div::-webkit-scrollbar {
-  display: none; /* Chrome, Safari, Opera*/
-}
 
 .content-div {
   width: 900px;
@@ -201,6 +232,23 @@ select {
   /* position: fixed; */
   width: 100%;
   height: 700px;
+}
+
+.header-div {
+  left: 0%;
+  right: 0%;
+  top: 0%;
+  height: 100px;
+  width: 900px;
+  display: flex;
+  align-items: center;
+}
+
+.header-right-div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  justify-content: right;
 }
 
 .title_p {
@@ -289,7 +337,7 @@ select {
   left: 0%;
   right: 0%;
   bottom: 0%;
-  width: 900px;
+  width: 930px;
   height: 80px;
   background: #3d2817;
   box-shadow: 0px 0px 20px rgba(61, 40, 23, 0.5);
@@ -303,10 +351,12 @@ select {
   font-family: "국립박물관문화재단클래식M", sans-serif;
   font-size: 26px;
   line-height: 160%;
-  text-align: right;
+  width: 100%;
+  text-align: center;
   border: 0;
   color: white;
 }
+
 .modal-popup {
   position: absolute;
   top: 0;
@@ -316,6 +366,7 @@ select {
   height: 100%;
 
   display: none;
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-popup.show {
@@ -334,9 +385,31 @@ select {
 
   text-align: center;
 
-  background-color: var(--second-color);
-  border-radius: 10px;
-  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+  background-color: white;
 
   transform: translateX(-50%) translateY(-50%);
+}
+
+#funding-loading {
+  display: none;
+  /* width: 100%;
+            height: 100%; */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#funding-loading .spinner {
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 46%;
+  width: 150px;
+  height: 150px;
+  /* margin-top: -32px;
+            margin-left: -32px;             */
+  border-radius: 50%;
+  border: 20px solid transparent;
+  border-top-color: #ce113b;
+  border-bottom-color: #ce113b;
+  animation: spinner 0.8s ease infinite;
 }
