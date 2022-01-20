@@ -214,14 +214,12 @@ const btnOpenPopup = document.querySelector(".btn-open-popup");
 const btnClosePopup = document.querySelector(".btn-close-popup");
 
 btnOpenPopup.addEventListener("click", () => {
-  modal.classList.toggle("show");
-  const target = document.getElementById("bonus-claim-btn");
-  target.disabled = true;
-
-  if (modal.classList.contains("show")) {
-    body.style.overflow = "hidden";
-  }
-  showBonusClaimCardList();
+  // modal.classList.toggle("show");
+  // const target = document.getElementById("bonus-claim-btn");
+  // target.disabled = true;
+  // if (modal.classList.contains("show")) {
+  //   body.style.overflow = "hidden";
+  // }
 });
 
 btnClosePopup.addEventListener("click", () => {
