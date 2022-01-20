@@ -1,0 +1,342 @@
+@charset "utf-8";
+:root,
+:root.aquamarine {
+  --primary-color: #3d2817;
+  --primary-active-font-color: #25190f;
+  --primary-default-font-color: #25190f;
+  --buton-font-color: #ffffff;
+  --common-frame-bg-color: black;
+  --title-font-color: aquamarine;
+  --second-color: coral;
+}
+
+@font-face {
+  font-family: "NotoSerifKR";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NotoSerifKR.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "국립박물관문화재단클래식B";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/국립박물관문화재단클래식B.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "국립박물관문화재단클래식M";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/국립박물관문화재단클래식M.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,
+body {
+  color: var(--primary-default-font-color);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0 auto;
+  font-family: "NotoSerifKR", sans-serif;
+  height: 100%;
+
+  /* font-family: "Fuzzy Bubbles", cursive; */
+  /* padding-top: 20px;
+  padding-bottom: 20px; */
+}
+
+div {
+  color: var(--primary-default-font-color);
+  margin: 0 auto;
+  text-align: center;
+  border: 1px;
+  border-color: #666666;
+}
+
+button {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 400;
+  background: none;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: var(--primary-color);
+  /* font-family: "Fuzzy Bubbles", cursive; */
+  font-family: "MuseumClassic", sans-serif;
+}
+
+button:hover {
+  background: var(--primary-color);
+  color: white;
+  cursor: pointer;
+}
+
+button:disabled,
+button[disabled] {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+}
+
+.button-text {
+  font-size: 14px;
+  line-height: 160%;
+  text-align: right;
+  border: 0;
+}
+
+p {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+input {
+  border: 1px solid var(--primary-color);
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 18px;
+  text-align: center;
+}
+
+select {
+  border: 1px solid var(--primary-color);
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.frame-common {
+  width: 90%;
+  text-align: center;
+  padding: 30px;
+  /* background: var(--common-frame-bg-color); */
+  /* border-radius: 20px; */
+  margin-top: 20px;
+  /* border: 1px solid var(--primary-color); */
+}
+
+@keyframes spinner {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+#minting-loading {
+  display: none;
+  /* width: 100%;
+            height: 100%; */
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+#minting-loading .spinner {
+  box-sizing: border-box;
+  position: fixed;
+  top: 50%;
+  left: 46%;
+  width: 150px;
+  height: 150px;
+  /* margin-top: -32px;
+            margin-left: -32px;             */
+  border-radius: 50%;
+  border: 20px solid transparent;
+  border-top-color: var(--second-color);
+  border-bottom-color: var(--second-color);
+  animation: spinner 0.8s ease infinite;
+}
+
+.body-div {
+  width: 100%;
+  height: 92%;
+  min-height: 300px;
+  /* backdrop-filter: brightness(40%) blur(5px); */
+  /* padding-top: 30px;
+  padding-bottom: 30px; */
+  overflow: auto;
+  scrollbar-width: none;
+}
+.body-div::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera*/
+}
+
+.content-div {
+  width: 900px;
+}
+
+.statement-div {
+  width: 758px;
+  margin-top: -20px;
+  margin-bottom: -10px;
+  padding-top: 75px;
+  padding-bottom: 75px;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+.buttom-div {
+  /* position: fixed;
+  height: 80px;
+  text-align: center; */
+  position: absolute;
+  left: 0%;
+  right: 0%;
+  bottom: 0%;
+  height: 80px;
+  width: 900px;
+  background-color: var(--primary-color);
+}
+.top-div {
+  /* position: fixed; */
+  width: 100%;
+  height: 700px;
+}
+
+.title_p {
+  font-family: "국립박물관문화재단클래식M", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 26px;
+  line-height: 140%;
+}
+
+.title_sub_p {
+  font-family: "국립박물관문화재단클래식M", sans-serif;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 20px;
+  line-height: 140%;
+}
+
+.content_p {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 160%;
+  text-align: left;
+}
+
+.descript-div {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 30px;
+
+  width: 840px;
+  left: calc(50% - 900px / 2);
+  top: 1776px;
+
+  /* wh-bg-color fff */
+
+  background: #ffffff;
+  /* shadow */
+
+  box-shadow: 0px 0px 20px rgba(61, 40, 23, 0.5);
+}
+
+.descript-content-div {
+  text-align: left;
+  margin-left: 15px;
+}
+
+.img-statement {
+  height: 200px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.funding-state-div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 20px;
+
+  width: 350px;
+  height: 100px;
+  left: 510px;
+  top: 780px;
+
+  /* wh-bg-color fff */
+
+  background: #ffffff;
+  /* shadow */
+
+  box-shadow: 0px 0px 20px rgba(61, 40, 23, 0.5);
+}
+
+.funding-text-p {
+  align-self: end;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 26px;
+  line-height: 160%;
+  /* or 51px */
+}
+
+.funding-btn-div {
+  position: absolute;
+  left: 0%;
+  right: 0%;
+  bottom: 0%;
+  width: 900px;
+  height: 80px;
+  background: #3d2817;
+  box-shadow: 0px 0px 20px rgba(61, 40, 23, 0.5);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button-funding {
+  font-family: "국립박물관문화재단클래식M", sans-serif;
+  font-size: 26px;
+  line-height: 160%;
+  text-align: right;
+  border: 0;
+  color: white;
+}
+.modal-popup {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  display: none;
+}
+
+.modal-popup.show {
+  display: block;
+}
+
+.modal_body {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+
+  width: 50%;
+  max-height: 90%;
+
+  padding: 20px;
+
+  text-align: center;
+
+  background-color: var(--second-color);
+  border-radius: 10px;
+  box-shadow: 0 2px 3px 0 rgba(34, 36, 38, 0.15);
+
+  transform: translateX(-50%) translateY(-50%);
+}

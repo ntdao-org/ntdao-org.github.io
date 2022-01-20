@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="CACHE-CONTROL" content="NO-CACHE" />
+    <!-- Primary Meta Tags -->
+    <title>National Treasure DAO</title>
+    <meta name="title" content="National Treasure DAO (NTD)" />
+    <meta
+      name="description"
+      content="A statement on the establishment of the National Treasure DAO for participation in the Kansong Museum of Art auction"
+    />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://ntdao.org/" />
+    <meta property="og:title" content="National Treasure DAO (NTD)" />
+    <meta
+      property="og:description"
+      content="A statement on the establishment of the National Treasure DAO for participation in the Kansong Museum of Art auction"
+    />
+    <meta
+      property="og:image"
+      content="https://raw.githubusercontent.com/ntdao-org/ntdao-org.github.io/main/asset/ntd_logo.jpg"
+    />
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://ntdao.org/" />
+    <meta property="twitter:title" content="National Treasure DAO (NTD)" />
+    <meta
+      property="twitter:description"
+      content="A statement on the establishment of the National Treasure DAO for participation in the Kansong Museum of Art auction"
+    />
+    <meta
+      property="twitter:image"
+      content="https://raw.githubusercontent.com/ntdao-org/ntdao-org.github.io/main/asset/ntd_logo.jpg"
+    />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <!-- <meta name="twitter:site" content="@Fortress_Arena" /> -->
+    <meta name="twitter:title" content="National Treasure DAO (NTD)" />
+    <meta
+      name="twitter:description"
+      content="A statement on the establishment of the National Treasure DAO for participation in the Kansong Museum of Art auction"
+    />
+    <meta
+      name="twitter:image"
+      content="https://raw.githubusercontent.com/ntdao-org/ntdao-org.github.io/main/asset/ntd_logo.jpg"
+    />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="National Treasure DAO (NTD)" />
+    <meta
+      name="twitter:description"
+      content="A statement on the establishment of the National Treasure DAO for participation in the Kansong Museum of Art auction"
+    />
+    <meta
+      name="twitter:image"
+      content="https://raw.githubusercontent.com/ntdao-org/ntdao-org.github.io/main/asset/ntd_logo.jpg"
+    />
+    <meta name="twitter:site" content="https://ntdao.org/" />
+
+    <script
+      src="https://code.jquery.com/jquery-3.6.0.min.js"
+      integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+      crossorigin="anonymous"
+    ></script>
+    <link rel="icon" type="image/png" href="./favicon1.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- <link
+      href="https://fonts.googleapis.com/css2?family=Fuzzy+Bubbles&display=swap"
+      rel="stylesheet"
+    /> -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kanit&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="stylesheet" type="text/css" href="./css/index.css" />
+  </head>
+  <body>
+    <div class="body-div" id="body-div">
+      <div id="minting-loading"><div class="spinner"></div></div>
+      <!-- <div class="modal-popup">
+        <div class="modal_body">
+          <div id="popup-content">
+            <p>There are not enough cards to mint.</p>
+          </div>
+          <div>
+            <button onclick="closePopup()">Close</button>
+          </div>
+        </div>
+      </div> -->
+      <div
+        id="banner_div"
+        class="top-div"
+        style="background-image: url('./asset/banner1.jpg'); height: 650px"
+      >
+        <!-- <img id="bg-image" width="100%" height="650px" src="./asset/banner1.jpg"/> -->
+        <div id="div-countdown" style="display: none">
+          <h2 style="margin-bottom: 0px">
+            <!-- Time remaining until the Presale Whitelist Round 1 starts -->
+          </h2>
+          <h2
+            id="countdown"
+            style="margin-top: 0px; color: var(--second-color)"
+          ></h2>
+        </div>
+      </div>
+      <div class="content-div">
+        <div class="frame-common" style="display: none">
+          <div id="div-network" style="margin-bottom: 20px">
+            Current Network :
+            <span class="current-network" style="margin-right: 10px"></span>
+          </div>
+
+          <div id="network-info" style="display: block; text-align: center">
+            <div>
+              <p style="color: #ffffff">
+                Check your wallet is connected to the Klaytn Mainnet.
+              </p>
+            </div>
+          </div>
+
+          <div
+            id="connect-btn"
+            style="display: none; margin-bottom: 30px; margin-top: 10px"
+          >
+            <button onclick="connectWallet()">지갑 연결</button>
+          </div>
+          <div>
+            <div id="div-myaddress" style="display: none">
+              My Address :
+              <span class="my-address" style="margin-right: 10px"></span>
+            </div>
+            <div>
+              NFT Address :
+              <span class="nft-address" style="margin-right: 10px"></span>
+            </div>
+          </div>
+        </div>
+        <div style="margin-top: 80px; display: inline-flex">
+          <div class="funding-state-div">
+            <p class="title_sub_p">목표 모금 금액</p>
+            <p class="funding-text-p">100,000,000 KLAY</p>
+          </div>
+          <div class="funding-state-div" style="margin-left: 20px">
+            <p class="title_sub_p">현재까지 모금 금액</p>
+            <p class="funding-text-p">900,000 KLAY</p>
+          </div>
+        </div>
+        <div style="margin-top: 80px">
+          <img src="./asset/statement-bg-obj1.png" />
+          <div
+            class="statement-div"
+            style="background-image: url('./asset/statement-bg.jpg')"
+          >
+            <p class="title_p">간송미술관 경매 참여를 위한</p>
+            <p class="title_p">국보 DAO (National Treasure DAO) 결성 취지문</p>
+            <p class="content_p">
+              우리나라의 많은 빛나는 문화유산이 잦은 외세의 침략과 약탈에 의해
+              이름만 남긴 채 역사 속으로 사라져 갔습니다. 그나마 남은 문화재마저
+              대중으로부터의 충분한 관심과 지원을 받지 못해, 그 역사적 의미가
+              두루 공유, 전파되지 못하는 사례들이 많습니다. 사재를 털어 우리
+              문화재 수호와 연구에 나섰던 간송과 같은 선각자에 의해 그나마
+              명맥이 유지되고 있는 현실입니다.
+            </p>
+            <p class="content_p">
+              국가기관에 의해 국보로 지정되고 관리되는 시스템이 당연히 문화재
+              보호에 큰 도움이 되는 것은 사실이지만, 그것만으로는 시민들의
+              자발적인 지원과 관심의 확대로 연결되는 데 한계가 많을 수밖에
+              없습니다. 시민들 스스로 주체가 되어 문화재 가치를 공유하고
+              자발적으로 참여하는 다양한 커뮤니티가 있어야만 문화재가 가진
+              진정한 역사적 가치와 의미가 제대로 드러날 수 있습니다. ...
+            </p>
+            <div id="full_statement" style="display: none">
+              <p class="content_p">
+                National Treasure DAO(국보 다오)는 우리나라의 문화유산을 시민
+                스스로 주체가 되어 보호하고, 그 의미를 대중적으로 확산시키기
+                위해 기획된 프로젝트입니다. DAO(Decentralized Autonomous
+                Organization)라는 명칭을 부여한 것은, 이 프로젝트는 특정한
+                기업이나 개인의 이익을 위함이 아니라, 많은 시민과 커뮤니티들이
+                자발적으로 참여해 탈중앙화된 의사결정을 통해 단체의 목표를
+                이루려는 것을 표현하기 위함입니다. 이 프로젝트를 진행해 가는
+                과정 자체가 문화재 보호의 참된 의미를 같이 고민하고, 공유하고,
+                힘을 합해 나가는 목표이기도 한 것입니다.
+              </p>
+              <p class="content_p">
+                이러한 취지를 바탕으로 National Treasure DAO는 얼마 전
+                간송미술관이 케이옥션을 통해 내놓은 국보 2점의 경매에 참여해 이
+                문화재를 낙찰받고 이를 통해 NFT를 발행해 전 국민적 문화재 보호에
+                대한 관심을 획기적으로 증진시키고자 합니다. DAO에 의한 실물
+                문화재의 소유를 기반으로 발행되는 NFT는 디지털 자산 영역에만
+                머무르고 있는 NFT의 개념을 한 단계 더 높은 수준으로 향상시킬 수
+                있는 계기가 될 것입니다. 이렇게 확보한 문화재는 많은 수의 시민과
+                커뮤니티의 공유자산으로 보호될 뿐 아니라, 지속적인 대중적
+                관심사로 확산될 것입니다. 또한 커뮤니티와 함께 추진하는 다채로운
+                온라인 및 오프라인 행사로 연결될 수 있는 매개가 될 수 있습니다.
+              </p>
+              <p class="content_p">
+                경매에서 국보를 낙찰받기 위한 기금을 모집하기 위해 클레이튼
+                블록체인에서 모금 컨트랙트를 오픈할 예정입니다. 오직
+                클레이(Klay) 코인으로만 기금을 받으며, 모금의 전 과정은
+                오픈소스에 의해 사전에 확인 가능한 스마트 컨트랙트를 통해
+                진행됩니다. 만일 낙찰받기에 필요한 충분한 자금이 모이지 않거나,
+                낙찰을 받지 못할 경우, 모인 모든 자금의 반환을 쉽고 투명하게
+                처리할 수 있도록 하기 위해, 모금에 참여한 금액에 비례해 환불권의
+                성격을 가진 KIP7 토큰(클레이튼의 ERC20 토큰)인 NTD를 발행할
+                예정입니다. NTD가 낙찰받는 것에 실패할 경우, 이 토큰을 소각하고
+                모금에 사용되었던 클레이 코인을 환불받을 수 있습니다.**
+              </p>
+              <p class="content_p">
+                만일 성공적으로 NTD가 낙찰을 받아 해당 문화재의 소유권을 확보할
+                경우, 이것을 기반으로 해당 국보의 NFT가 발행되게 되는데, 이 때,
+                NTD 토큰 보유자는 토큰 보유량에 비례해 NFT를 민팅(발행)할 수
+                있는 자격을 부여받게 됩니다. 경매에 참여하고 낙찰받은 문화재의
+                위탁관리계약은 DAO를 대리하는 법무법인을 통해 진행할 예정입니다.
+                법무법인에 대한 상세한 정보는 모금 과정 이전에 공개될
+                예정입니다. NFT 보유자에 대해서는 향후 다양한 멤버쉽 특전과 행사
+                참여 기회가 보장될 것입니다.
+              </p>
+              <p class="content_p" style="margin-top: 50px">
+                ** National Treasure DAO에서 발행하는 NTD 토큰은 환불을 용이하기
+                위한 수단일 뿐이지 수익을 위한 투자자산이 아니며, 지분의
+                소유권을 법률적으로 보장하는 장치도 아닙니다. 만일 충분한 기금이
+                형성되어 경매에 참여했음에도 경매에서 이기지 못했을 경우, 일부
+                금액이 클레이에서 원화로 환전되었다가, 다시 클레이로 환전되면서,
+                이 기간 동안 원화 기준 시세차익에 따른 일부 클레이 금액의 손실이
+                일어날 가능성은 있습니다. 이 프로젝트는 투자에 대한 조언이
+                아니며, 어떠한 수익을 보장하지도 않습니다.
+              </p>
+              <p class="title_sub_p" style="margin-top: 50px">
+                경매에 나온 대상 문화재
+              </p>
+              <div style="text-align: center; display: inline-flex">
+                <div class="img-statement">
+                  <img class="img-statement" src="./asset/statement-img1.jpg" />
+                  <p class="content_p" style="text-align: center">
+                    계미명금동삼존불입상
+                  </p>
+                </div>
+                <div class="img-statement">
+                  <img class="img-statement" src="./asset/statement-img2.jpg" />
+                  <p class="content_p" style="text-align: center">
+                    금동삼존불감
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div style="text-align: right">
+              <button
+                class="button-text"
+                id="btn_show_full_statement"
+                onclick="showFullStatement('1')"
+              >
+                + 전문보기
+              </button>
+            </div>
+          </div>
+          <img src="./asset/statement-bg-obj2.png" />
+        </div>
+        <div style="margin-top: 80px">
+          <p class="title_p" style="margin-bottom: 30px">국보 설명</p>
+          <div class="descript-div">
+            <img src="./asset/description-img1.jpg" />
+            <div class="descript-content-div">
+              <p class="title_sub_p">계미명금동삼존불입상</p>
+              <p class="content_p" style="margin-top: 0px">
+                癸未銘金銅三尊佛立像
+              </p>
+              <p class="content_p">
+                중앙의 본존불과 양쪽의 협시보살이 하나의 광배를 공유하는
+                일광삼존불(一光三尊佛) 양식의 불상이다. 이 양식은 중국에서
+                발원하여 6세기 동아시아를 아우르며 크게 유행하였다. 한반도
+                내에서는 고구려에 의해 일광삼존불 양식의 전형이 확립되었는데
+                이후 백제, 나아가 일본까지 이어졌다. 무엇보다 광배 뒷면에는
+                발원자나 조성배경을 기록한 조상기가 새겨진 경우가 많아, 제작
+                연대는 물론 불상의 존명을 파악할 수 있어 높은 사료적 가치를
+                지닌다. ...
+              </p>
+              <div id="full_desc1" style="display: none">
+                <p class="content_p">
+                  계미명금동삼존불입상은 그러한 불상 중 하나로 현전하는
+                  우리나라의 일광삼존불 가운데 가장 이른 시기에 조성된 것으로
+                  밝혀진 작품이다. 광배의 뒷면에는
+                  “癸未十一月丁日寶華爲亡父趙貴人造.”이라는 명문이 새겨져 있다.
+                  이 내용을 통해 보화라는 이가 돌아가신 아버지 조씨를 위해
+                  조성했음을 알 수 있다. 또한 계미년(563년)이라는 조성 연대를
+                  확인할 수 있기에 현전자료가 적은 6세기 기준작으로서 양식적
+                  지표를 제시한다.
+                </p>
+                <p class="content_p">
+                  본존불은 양손을 각각 위아래로 뻗어 시무외·여원인을 맺었고,
+                  얼굴은 약간의 팽창감이 느껴지는 장방형이다. 머리는 머리칼이
+                  표현되지 않았고, 그 위에는 공처럼 둥근 육계를 얹었다. 양쪽의
+                  어깨를 모두 감싼 통견의 법의는 아래로 내려갈수록 서서히 넓어져
+                  옷자락 양끝이 좌우로 뻗었고, 가슴 밑의 옷자락은 V자 주름으로
+                  흘러내렸다. 본존불을 중심으로 양 옆에 배치된 협시보살은
+                  본존불의 3분의 2정도로 모두 머리에 보관을 쓰고 있다. X자형으로
+                  교차된 천의 자락 사이로 큰 손이 표현되어 있으며, 연화대좌를
+                  갖추고 있다.
+                </p>
+                <p class="content_p">
+                  본존불과 양 협시보살이 공유하고 있는 주형거신광배는 본존불에
+                  고정된 형태이다. 본존불 등에는 광배를 꽂을 수 있는 촉이
+                  있는데, 끼움쇠를 이용해 광배를 고정하고 있다. 광배는
+                  중앙부(본존불이 위치하는 곳)에 머리부분의 두광(頭光), 몸체
+                  부분의 신광(身光), 그리고 그 주위를 감싼 주연(周緣)으로
+                  구획되어 있다. 본존의 머리 뒤편엔 보일 듯 말 듯한 연꽃이 피어
+                  있고, 이를 중심으로 3겹의 원광이 배치되었다. 이를 중심으로
+                  약간의 간격을 두고 원광을 크게 그렸으며, 그 중앙 상단에는 연꽃
+                  봉오리 모양의 보주를 올리고 그 아래로 당초문을 길게 내렸다.
+                  두광의 양편에는 몸의 모양을 따라 곡선으로 선을 내렸는데, 이
+                  또한 두광을 배치한 것과 마찬가지로 몸 주변에 3겹의 신광을
+                  배치하였다. 그 사이사이 하단부에서부터 피어난 연꽃줄기를 새긴
+                  후, 도톰한 융기선으로 마무리한 뒤 여백에는 작은 원을 찍듯이
+                  채워넣었다. 협시보살의 머리 위쪽부터 광배의 주연부에는 위로
+                  꼬리를 뻗은 S자형의 화염문을 가득 새겼고, 여백은 수평선문으로
+                  채웠다. 본존불이 딛고 서있는 대좌는 넓은 원판에 서서히
+                  좁아드는 형태의 원통을 올리고, 그 위에 3겹의 연꽃을 덮은 3단
+                  복판 연화문대좌이다. 연잎의 가장자리에는 광배와 마찬가지로
+                  작은 원형의 어자문(魚子紋)이 장식되었다.
+                </p>
+                <p class="content_p">
+                  금동<br />
+                  17.7(h)cm | 563년
+                </p>
+              </div>
+              <div style="text-align: right">
+                <button
+                  class="button-text"
+                  id="btn_show_desc_1"
+                  onclick="showFullStatement('2')"
+                >
+                  + 전문보기
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div
+            class="descript-div"
+            style="margin-top: 20px; margin-bottom: 30px"
+          >
+            <img src="./asset/description-img2.jpg" />
+            <div class="descript-content-div">
+              <p class="title_sub_p">금동삼존불감</p>
+              <p class="content_p" style="margin-top: 0px">金銅三尊佛龕</p>
+              <p class="content_p">
+                사찰 내부에 조성된 불전을 그대로 축소한 듯한 이 작품은 불전
+                형식을 따른 감(龕) 내부에 삼존불을 봉안한 작품이다. 이 같은
+                불감의 종류는 5cm 내외의 작은 불상부터 10-20cm에 달하는 불상을
+                봉안하는 비교적 큰 불감까지 다양하나, 대체로 원불(願佛)이라 하여
+                개인이 사찰 밖에서 예불을 드리고자 한 것이다.
+              </p>
+              <div id="full_desc2" style="display: none">
+                <p class="content_p">
+                  불감의 형식은 난간을 돌린 기단 위에 불당의 모형을 만들어 얹은
+                  것이다. 단순한 형태의 기단부 위 네 귀퉁이에 공포를 올린
+                  배흘림기둥을 세우고, 기둥 사이에는 공간포 하나를 올려 다포식
+                  구조를 짰다. 그 위에는 올린 기왓골이 도드라진 우진각 지붕
+                  용마루 양쪽에는 양 끝을 꽉 물어버린 듯한 모양의 치미를
+                  올렸으며, 네 귀마루에는 봉두형 장식을 배치했다. 또한 불전
+                  내부의 삼존불이 잘 보일 수 있도록 양 측면과 앞면에는 크게 창을
+                  냈다. 특히 우진각 지붕구조를 가진 건축물을 표현한 작품
+                  중에서는 가장 이른 작품 중 하나로 꼽히며, 여기에 중국 북송
+                  계열의 치미를 올린 점에서 당시 건축구조를 일면 엿볼 수 있다.
+                </p>
+                <p class="content_p">
+                  불전을 들어 올리면, 불전 안에 봉안되어 있는 삼존불이 드러난다.
+                  이는 대좌에 앉은 본존불좌상을 중심으로 양쪽의 두 협시보살이 서
+                  있는 형태로 서로 동일한 표현 수법을 보인다. 본존불은 중앙에
+                  놓인 사각의 대좌위에 피어난 연꽃 위에 시무외인을 맺고 가부좌를
+                  한 채 앉아 있다. 나발로 표현된 머리는 살짝 숙이고 있으며, 두
+                  어깨를 감싼 두툼한 통견의 법의가 유난히 길게 표현된 허리를
+                  타고 흘러 내렸는데, 옷주름은 다소 형식적이다. 한 손을 들어
+                  시무외인을 취하고, 다른 손은 무릎 위에 가지런히 올렸다. 뒷면에
+                  촉을 이용해 연결한 광배는 타출로 무늬를 낸 두광과 신광을
+                  갖추고 그 주변은 여백을 투각한 화염문으로 장식하였다. 양쪽
+                  협시보살은 작은 연꽃 대좌를 딛고 서 있다. 보관을 쓴 머리
+                  양쪽으로 내린 머리카락이 어깨를 덮고, 선각한 영락에 투박한
+                  주름이 그려진 옷자락은 두툼하게 표현되었다. 이들 또한 본존불과
+                  마찬가지로 타출로 장식하고 화염을 두른 광배를 촉을 이용해
+                  갖추고 있다.
+                </p>
+                <p class="content_p">
+                  불상에서 허리가 길고 하체가 짧은 본존불의 모습이나, 옷주름의
+                  형태, 보살의 보관이나 목걸이에서 북송, 요의 불상 양식의 영향이
+                  일부 드러나고 있어 학계에서는 이를 북방 계통의 영향을 받은
+                  11-12세기의 작품으로 추정한다. 따라서 이는 당시 불상의 양식 뿐
+                  아니라 불상에서 추정되는 연대에 해당하는 건축물의 모습을
+                  제시할 수 있는 자료로서 형언할 수 없는 가치를 갖는다.
+                </p>
+                <p class="content_p">
+                  금동<br />
+                  18(h)cm | 11-12세기
+                </p>
+              </div>
+              <div style="text-align: right">
+                <button
+                  class="button-text"
+                  id="btn_show_desc_2"
+                  onclick="showFullStatement('3')"
+                >
+                  + 전문보기
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="funding-btn-div">
+      <button class="button-funding">참여하기</button>
+    </div>
+    <!-- Script -->
+    <script src="./js/1.2.11-web3-min.js"></script>
+    <script src="./js/5.2-umd-min.js" type="application/javascript"></script>
+    <script
+      src="./contractabi/ntdabi_klaytn_mainnet.js"
+      type=" text/javascript"
+    ></script>
+    <script
+      src="./contractabi/ntdabi_klaytn_testnet.js"
+      type=" text/javascript"
+    ></script>
+    <script src="./js/utils.js" type=" text/javascript"></script>
+    <script src="./js/index.js" type="application/javascript"></script>
+  </body>
+</html>
