@@ -17,6 +17,7 @@ let totalsupplyInterval;
 let openMyCardsView = false;
 let mintingState = 0; // 0:minting is not allowed , 1: pre minting , 2: public minting , 3: public minting is not allowed
 let multiCount = 0;
+let isKaikas = false;
 
 const nftAddress = {
   8217: "0x1340daa8DB39342Bc6d66aB9e62b8f7748F666e9",
@@ -43,8 +44,10 @@ window.addEventListener("load", function () {
 function loadWeb3() {
   if (typeof window.ethereum !== "undefined") {
     window.web3 = new Web3(window.ethereum);
+    isKaikas = false;
   } else {
     window.web3 = new Web3(window.caver);
+    isKaikas = true;
     // window.web3 = new Web3(
     //   "https://mainnet.infura.io/v3/302b2ccfd49a40d480567a132cb7eb1d"
     // );
@@ -90,28 +93,52 @@ async function getAccount() {
   try {
     await getContracts();
 
-    var accounts = await web3.eth.getAccounts();
+    // console.log("getAccount accounts  => ", accounts);
+    if (isKaikas) {
+      let account = window.klaytn.selectedAddress;
+      if (account != null) {
+        myAddr = account;
 
-    if (accounts.length > 0) {
-      // myAddr = web3.utils.toChecksumAddress(accounts[0]);
-      myAddr = accounts[0];
+        $("#div-myaddress").show();
+        $(".my-address").html(getLink(myAddr, chainId));
+        $("#content_body").show();
+        $("#connect-btn").hide();
+        $("#my-addr-btn").show();
+        await getTotalSupply();
+      } else {
+        console.log("No Klaytn account is available!");
+        $("#div-myaddress").hide();
+        $("#content_body").hide();
+        $("#connect-btn").show();
+        $("#my-addr-btn").hide();
 
-      $("#div-myaddress").show();
-      $(".my-address").html(getLink(myAddr, chainId));
-      $("#content_body").show();
-      $("#connect-btn").hide();
-      $("#my-addr-btn").show();
-      await getTotalSupply();
+        $(".description").html(
+          "<p>모금에 참여하려면 지갑 연결 버튼을 클릭하여 지갑을 연결하세요..</p>"
+        );
+      }
     } else {
-      console.log("No Klaytn account is available!");
-      $("#div-myaddress").hide();
-      $("#content_body").hide();
-      $("#connect-btn").show();
-      $("#my-addr-btn").hide();
+      var accounts = await web3.eth.getAccounts();
+      if (accounts.length > 0) {
+        // myAddr = web3.utils.toChecksumAddress(accounts[0]);
+        myAddr = accounts[0];
 
-      $(".description").html(
-        "<p>모금에 참여하려면 지갑 연결 버튼을 클릭하여 지갑을 연결하세요..</p>"
-      );
+        $("#div-myaddress").show();
+        $(".my-address").html(getLink(myAddr, chainId));
+        $("#content_body").show();
+        $("#connect-btn").hide();
+        $("#my-addr-btn").show();
+        await getTotalSupply();
+      } else {
+        console.log("No Klaytn account is available!");
+        $("#div-myaddress").hide();
+        $("#content_body").hide();
+        $("#connect-btn").show();
+        $("#my-addr-btn").hide();
+
+        $(".description").html(
+          "<p>모금에 참여하려면 지갑 연결 버튼을 클릭하여 지갑을 연결하세요..</p>"
+        );
+      }
     }
   } catch (err) {
     console.log("getAccount => ", err);
@@ -127,7 +154,7 @@ async function getAccount() {
 }
 
 function connectWallet() {
-  if (typeof window.ethereum === "undefined") {
+  if (isKaikas) {
     window.klaytn
       .enable()
       .then((accounts) => {
@@ -172,7 +199,12 @@ function connectWallet() {
 }
 
 async function getContracts() {
-  nftContract = new web3.eth.Contract(nftAbi[chainId], nftAddress[chainId]);
+  if (isKaikas) {
+    nftContract = new caver.klay.Contract(nftAbi[chainId], nftAddress[chainId]);
+  } else {
+    nftContract = new web3.eth.Contract(nftAbi[chainId], nftAddress[chainId]);
+  }
+  console.log("getContracts nftContract =>", nftContract);
   $(".nft-address").html(getLink(nftAddress[chainId], chainId));
   await getMintingState();
 }
@@ -194,8 +226,11 @@ async function getMintingState() {
       btn_mint.innerText = "민팅 준비중입니다. ";
       break;
     case "1":
-      btn_mint.disabled = false;
-
+      if (chainId == 1001) {
+        btn_mint.disabled = false;
+      } else {
+        btn_mint.disabled = true;
+      }
       btn_mint.innerText = "민팅 참여하기 ( 준비 중 )";
       break;
     case "2":
@@ -295,6 +330,11 @@ async function checkMintingState(_mintedCnt) {
       } else {
         btn_mint.disabled = false;
       }
+      if (chainId == 1001) {
+        btn_mint.disabled = false;
+      } else {
+        btn_mint.disabled = true;
+      }
       break;
     case "2":
       // refund
@@ -316,39 +356,85 @@ async function nftMint() {
     const wei_value = ethers.BigNumber.from(fee_wei).mul(mintingCount);
     const total_mintingfee = ethers.utils.formatEther(wei_value);
 
-    // console.log("total_mintingfee =>", total_mintingfee);
+    console.log("total_mintingfee =>", total_mintingfee);
 
     switch (mintingState.toString()) {
       case "1":
         // public minting
         console.log("public Minting");
 
-        nftContract.methods
-          .publicMint(mintingCount)
-          .send({
-            from: myAddr,
-            value: ethers.utils.parseEther(total_mintingfee.toString()),
-          })
-          .on("transactionHash", (txid) => {
-            // console.log(`txid: ${txid}`)
-          })
-          .once("allEvents", (allEvents) => {
-            // console.log('allEvents')
-            // console.log(transferEvent)
-          })
-          .once("Transfer", (transferEvent) => {
-            // console.log('trasferEvent', transferEvent)
-          })
-          .once("receipt", (receipt) => {
-            $("#minting-loading").hide();
-            console.log("receipt => ", receipt);
+        if (isKaikas) {
+          let estmated_gas;
+          await nftContract.methods
+            .publicMint(mintingCount)
+            .estimateGas({
+              from: myAddr,
+              value: ethers.utils.parseEther(total_mintingfee.toString()),
+            })
+            .then(function (gasAmount) {
+              estmated_gas = gasAmount;
+              console.log("Gas => ", gasAmount);
+            })
+            .catch(function (error) {
+              console.log("Gas error => ", error);
+            });
 
-            setMintResult(receipt);
-          })
-          .on("error", (error) => {
-            $("#minting-loading").hide();
-            console.log(error);
-          });
+          nftContract.methods
+            .publicMint(mintingCount)
+            .send({
+              from: myAddr,
+              gas: estmated_gas,
+              value: ethers.utils.parseEther(total_mintingfee.toString()),
+            })
+            .on("transactionHash", (txid) => {
+              // console.log(`txid: ${txid}`)
+            })
+            .once("allEvents", (allEvents) => {
+              // console.log('allEvents')
+              // console.log(transferEvent)
+            })
+            .once("Transfer", (transferEvent) => {
+              // console.log('trasferEvent', transferEvent)
+            })
+            .once("receipt", (receipt) => {
+              $("#minting-loading").hide();
+              console.log("receipt => ", receipt);
+
+              setMintResult(receipt);
+            })
+            .on("error", (error) => {
+              $("#minting-loading").hide();
+              console.log(error);
+            });
+        } else {
+          nftContract.methods
+            .publicMint(mintingCount)
+            .send({
+              from: myAddr,
+              value: ethers.utils.parseEther(total_mintingfee.toString()),
+            })
+            .on("transactionHash", (txid) => {
+              // console.log(`txid: ${txid}`)
+            })
+            .once("allEvents", (allEvents) => {
+              // console.log('allEvents')
+              // console.log(transferEvent)
+            })
+            .once("Transfer", (transferEvent) => {
+              // console.log('trasferEvent', transferEvent)
+            })
+            .once("receipt", (receipt) => {
+              $("#minting-loading").hide();
+              console.log("receipt => ", receipt);
+
+              setMintResult(receipt);
+            })
+            .on("error", (error) => {
+              $("#minting-loading").hide();
+              console.log(error);
+            });
+        }
+
         break;
     }
   } catch (error) {
