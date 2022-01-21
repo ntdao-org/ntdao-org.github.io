@@ -127,32 +127,48 @@ async function getAccount() {
 }
 
 function connectWallet() {
-  if (
-    typeof window.ethereum === "undefined" &&
-    typeof window.caver === "undefined"
-  ) {
-    return showMsg(noAddrMsg);
+  if (typeof window.ethereum === "undefined") {
+    window.klaytn
+      .enable()
+      .then((accounts) => {
+        console.log("accounts => ", accounts);
+        myAddr = accounts[0];
+        $(".my-address").html(getLink(myAddr, chainId));
+        startApp();
+        //   $("#div-mintable").show();
+        //   isMintingAvailable(true);
+      })
+      .catch((err) => {
+        //   isMintingAvailable(false);
+        if (err.code === 4001) {
+          // EIP-1193 userRejectedRequest error
+          // If this happens, the user rejected the connection request.
+          console.log("Please connect to Your wallet!");
+        } else {
+          console.error(err);
+        }
+      });
+  } else {
+    window.ethereum
+      .request({ method: "eth_requestAccounts" })
+      .then((accounts) => {
+        myAddr = accounts[0];
+        $(".my-address").html(getLink(myAddr, chainId));
+        startApp();
+        //   $("#div-mintable").show();
+        //   isMintingAvailable(true);
+      })
+      .catch((err) => {
+        //   isMintingAvailable(false);
+        if (err.code === 4001) {
+          // EIP-1193 userRejectedRequest error
+          // If this happens, the user rejected the connection request.
+          console.log("Please connect to Your wallet!");
+        } else {
+          console.error(err);
+        }
+      });
   }
-
-  window.ethereum
-    .request({ method: "eth_requestAccounts" })
-    .then((accounts) => {
-      myAddr = accounts[0];
-      $(".my-address").html(getLink(myAddr, chainId));
-      startApp();
-      //   $("#div-mintable").show();
-      //   isMintingAvailable(true);
-    })
-    .catch((err) => {
-      //   isMintingAvailable(false);
-      if (err.code === 4001) {
-        // EIP-1193 userRejectedRequest error
-        // If this happens, the user rejected the connection request.
-        console.log("Please connect to Your wallet!");
-      } else {
-        console.error(err);
-      }
-    });
 }
 
 async function getContracts() {
@@ -386,12 +402,7 @@ showCardList = async (kind, tokenIds) => {
 
   claimTokenIdList = await nftContract.methods.tokensOf(myAddr).call();
 
-  // let tokenId = claimTokenIdList;
-  let tokenId = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 26, 27, 28, 29, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
-    13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
-  ];
+  let tokenId = claimTokenIdList;
   // let tokenId = [];
 
   if (tokenId.length == 0) {
