@@ -608,28 +608,18 @@ const btnClosePopup = document.querySelector(".btn-close-popup");
 
 btnOpenPopup.addEventListener("click", () => {
   modal.classList.toggle("show");
-  // const target = document.getElementById("bonus-claim-btn");
-  // target.disabled = true;
-  // if (modal.classList.contains("show")) {
-  //   body.style.overflow = "hidden";
-  // }
+  $("#funding-btn-div").hide();
 });
 
 btnClosePopup.addEventListener("click", () => {
   modal.classList.toggle("show");
-  // bonus_claim_complete.innerHTML = "";
-
-  // const target = document.getElementById("bonus-claim-btn");
-  // target.disabled = true;
-
-  // if (!modal.classList.contains("show")) {
-  //   body.style.overflow = "auto";
-  // }
+  $("#funding-btn-div").show();
 });
 
 modal.addEventListener("click", (event) => {
   if (event.target === modal) {
     modal.classList.toggle("show");
+    $("#funding-btn-div").show();
     // bonus_claim_complete.innerHTML = "";
 
     if (!modal.classList.contains("show")) {

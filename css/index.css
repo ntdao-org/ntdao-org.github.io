@@ -193,8 +193,8 @@ select {
             margin-left: -32px;             */
   border-radius: 50%;
   border: 20px solid transparent;
-  border-top-color: var(--second-color);
-  border-bottom-color: var(--second-color);
+  border-top-color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
   animation: spinner 0.8s ease infinite;
 }
 
