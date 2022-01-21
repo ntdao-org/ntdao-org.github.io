@@ -399,7 +399,7 @@ select {
   top: 50%;
   left: 50%;
 
-  width: 50%;
+  width: 70%;
   max-height: 90%;
 
   padding: 20px;
@@ -409,6 +409,7 @@ select {
   background-color: white;
 
   transform: translateX(-50%) translateY(-50%);
+  overflow: auto;
 }
 
 #funding-loading {

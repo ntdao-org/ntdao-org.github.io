@@ -19,6 +19,11 @@ let mintingState = 0; // 0:minting is not allowed , 1: pre minting , 2: public m
 let multiCount = 0;
 let isKaikas = false;
 
+const openseaurl = {
+  8217: "https://opensea.io/assets/0x1340daa8db39342bc6d66ab9e62b8f7748f666e9/",
+  1001: "https://testnets.opensea.io/assets/baobab/0x1340daa8db39342bc6d66ab9e62b8f7748f666e9/",
+};
+
 const nftAddress = {
   8217: "0x1340daa8DB39342Bc6d66aB9e62b8f7748F666e9",
   1001: "0x1340daa8DB39342Bc6d66aB9e62b8f7748F666e9",
@@ -206,6 +211,7 @@ async function getContracts() {
   }
   // console.log("getContracts nftContract =>", nftContract);
   $(".nft-address").html(getLink(nftAddress[chainId], chainId));
+  $(".opensea-address").html(getOpenSeaLink(chainId));
   await getMintingState();
 }
 
@@ -575,9 +581,16 @@ showCardList = async (kind, tokenIds) => {
       tokenId.className = "tokenID";
 
       label.innerHTML = "";
-      imgBox.innerHTML = `<label class="card-img" onclick="viewInOpensea(${arr[i].tokenId})" />
-          <img style="width: auto; height: auto; max-width: 200px; "  src="${arr[i].image}" ></img>
-          `;
+      // imgBox.innerHTML =
+      //   '<label class="card-img" onclick="viewInOpensea(${' +
+      //   arr[i].tokenId +
+      //   '})" /><img style="width: auto; height: auto; max-width: 200px; "  src="${' +
+      //   arr[i].image +
+      //   '}" ></img>';
+      imgBox.innerHTML =
+        '<label class="card-img" onclick="viewInOpensea(' +
+        arr[i].tokenId +
+        ')" /><img style="width: auto; height: auto; max-width: 200px; "  src="./asset/NTD-logo_Vertical-en.jpg" ></img>';
 
       tokenId.innerHTML = `#${arr[i].tokenId} </label>`;
       card.appendChild(imgBox);
@@ -594,6 +607,11 @@ showCardList = async (kind, tokenIds) => {
   cardsDeck(arr);
   $("#minting-loading").hide();
 };
+
+function viewInOpensea(tokenid) {
+  console.log("viewInOpensea =>", tokenid);
+  var popup = window.open(openseaurl[chainId] + tokenid, "OpenSea");
+}
 
 function showFullStatement(kind) {
   switch (kind) {

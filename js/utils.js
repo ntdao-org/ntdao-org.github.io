@@ -35,6 +35,25 @@ function getLink(addr, chainId) {
   }
 }
 
+function getOpenSeaLink(chainId) {
+  var explorer;
+  if (chainId == 8217) {
+    explorer = "https://opensea.io/collection/national-treasure-dao-nft";
+  } else if (chainId == 1001) {
+    explorer =
+      "https://testnets.opensea.io/collection/national-treasure-dao-nft";
+  } else {
+    explorer = "";
+    console.log("unsupported chainid " + chainId);
+  }
+
+  return (
+    '<a target="_blank" style="text-decoration: underline;color:coral;" href="' +
+    explorer +
+    '">Fortress-Arena NFT</a>'
+  );
+}
+
 function getWindowWidth() {
   var width =
     window.innerWidth ||
