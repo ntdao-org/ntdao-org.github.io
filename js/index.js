@@ -158,7 +158,7 @@ function connectWallet() {
     window.klaytn
       .enable()
       .then((accounts) => {
-        console.log("accounts => ", accounts);
+        // console.log("accounts => ", accounts);
         myAddr = accounts[0];
         $(".my-address").html(getLink(myAddr, chainId));
         startApp();
@@ -204,7 +204,7 @@ async function getContracts() {
   } else {
     nftContract = new web3.eth.Contract(nftAbi[chainId], nftAddress[chainId]);
   }
-  console.log("getContracts nftContract =>", nftContract);
+  // console.log("getContracts nftContract =>", nftContract);
   $(".nft-address").html(getLink(nftAddress[chainId], chainId));
   await getMintingState();
 }
@@ -219,7 +219,7 @@ async function getMintingState() {
   */
   btn_mint = document.getElementById("btn_mint");
   mintingState = await nftContract.methods.getMintingState().call();
-  console.log("mintingState =>", mintingState);
+  // console.log("mintingState =>", mintingState);
   switch (mintingState.toString()) {
     case "0":
       btn_mint.disabled = true;
@@ -231,7 +231,7 @@ async function getMintingState() {
       } else {
         btn_mint.disabled = true;
       }
-      btn_mint.innerText = "민팅 참여하기 ( 준비 중 )";
+      btn_mint.innerText = "민팅 참여하기";
       break;
     case "2":
       btn_mint.disabled = false;
@@ -263,7 +263,7 @@ async function getMultiClaimCount() {
       break;
   }
 
-  console.log("getMultiClaimCount multiCount => ", multiCount);
+  // console.log("getMultiClaimCount multiCount => ", multiCount);
 
   // if (mintingState == 1) {
   //   $(".mintingfee").html("[ " + fee_gwei + " KLAY ]");
@@ -303,6 +303,33 @@ async function getTotalSupply() {
   maxCnt = await checkMintingState(mintedCnt);
 
   console.log("getTotalSupply   mintedCnt=> ", mintedCnt);
+
+  let target_fund_cnt = document.getElementById("target_fund_cnt");
+  let current_fund_cnt = document.getElementById("current_fund_cnt");
+
+  let target_fund_klay = document.getElementById("target_fund_klay");
+  let current_fund_klay = document.getElementById("current_fund_klay");
+
+  const fee_wei = await nftContract.methods.MINTING_FEE().call();
+
+  const target_fund_klay_wei = ethers.BigNumber.from(fee_wei).mul(maxCnt);
+  const current_fund_klay_wei = ethers.BigNumber.from(fee_wei).mul(mintedCnt);
+
+  let target_fund_klay_gwei = ethers.utils.formatEther(target_fund_klay_wei);
+  target_fund_klay_gwei = gencurrencyFormat(target_fund_klay_gwei);
+
+  let current_fund_klay_gwei = ethers.utils.formatEther(current_fund_klay_wei);
+  current_fund_klay_gwei = gencurrencyFormat(current_fund_klay_gwei);
+
+  maxCnt = gencurrencyFormat(maxCnt);
+  mintedCnt = gencurrencyFormat(mintedCnt);
+
+  target_fund_cnt.innerText = maxCnt;
+  current_fund_cnt.innerText = mintedCnt;
+  target_fund_klay.innerHTML =
+    target_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
+  current_fund_klay.innerHTML =
+    current_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
 
   $(".claimedcnt").html(mintedCnt + "/" + maxCnt);
   showCardList("minted_cards_deck", null);
@@ -348,7 +375,7 @@ async function nftMint() {
   try {
     $("#minting-loading").show();
 
-    console.log("mintingState -> ", mintingState);
+    // console.log("mintingState -> ", mintingState);
     // getMinting Fee
     const fee_wei = await nftContract.methods.MINTING_FEE().call();
     const mintingCount = $("#claimcount option:selected").val();
@@ -356,7 +383,7 @@ async function nftMint() {
     const wei_value = ethers.BigNumber.from(fee_wei).mul(mintingCount);
     const total_mintingfee = ethers.utils.formatEther(wei_value);
 
-    console.log("total_mintingfee =>", total_mintingfee);
+    // console.log("total_mintingfee =>", total_mintingfee);
 
     switch (mintingState.toString()) {
       case "1":
@@ -398,7 +425,7 @@ async function nftMint() {
             })
             .once("receipt", (receipt) => {
               $("#minting-loading").hide();
-              console.log("receipt => ", receipt);
+              // console.log("receipt => ", receipt);
 
               setMintResult(receipt);
             })
@@ -463,7 +490,7 @@ async function nftMint() {
         resultTokenids.push(receipt.events.Transfer.returnValues.tokenId);
         // console.log("resultTokenids => ", resultTokenids);
       }
-      console.log("resultTokenids => ", resultTokenids);
+      // console.log("resultTokenids => ", resultTokenids);
       getTotalSupply();
     }
   }
@@ -481,8 +508,8 @@ getCardInfo = async (tokenId) => {
 };
 
 showCardList = async (kind, tokenIds) => {
-  console.log("showCardList kind =>", kind);
-  console.log("showCardList tokenIds =>", tokenIds);
+  // console.log("showCardList kind =>", kind);
+  // console.log("showCardList tokenIds =>", tokenIds);
   $("#minting-loading").show();
   let claimTokenIdList = [];
 
@@ -490,6 +517,25 @@ showCardList = async (kind, tokenIds) => {
 
   let tokenId = claimTokenIdList;
   // let tokenId = [];
+
+  if (tokenId.length > 0) {
+    const fee_wei = await nftContract.methods.MINTING_FEE().call();
+    let my_fund_cnt = document.getElementById("my_fund_cnt");
+    let my_fund_klay = document.getElementById("my_fund_klay");
+    // console.log("my_fund_klay_wei fee_wei=> ", fee_wei);
+    // console.log("tokenId.length=> ", tokenId.length);
+    const my_fund_klay_wei = ethers.BigNumber.from(fee_wei).mul(tokenId.length);
+
+    let my_fund_klay_gwei = ethers.utils.formatEther(my_fund_klay_wei);
+
+    my_fund_klay_gwei = gencurrencyFormat(my_fund_klay_gwei);
+    let myTokenCnt = tokenId.length;
+    myTokenCnt = gencurrencyFormat(myTokenCnt);
+
+    my_fund_cnt.innerText = myTokenCnt;
+    my_fund_klay.innerHTML =
+      my_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
+  }
 
   if (tokenId.length == 0) {
     $("#div-minted-cards").hide();
@@ -637,3 +683,11 @@ modal.addEventListener("click", (event) => {
     }
   }
 });
+
+function gencurrencyFormat(_val) {
+  let org_val = _val;
+
+  org_val = org_val.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",");
+
+  return org_val;
+}

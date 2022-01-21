@@ -1,5 +1,5 @@
 function getLink(addr, chainId) {
-  console.log("getLink : addr => ", addr);
+  // console.log("getLink : addr => ", addr);
   var explorer;
   if (chainId == 8217) {
     explorer = "https://scope.klaytn.com";
