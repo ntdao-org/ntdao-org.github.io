@@ -81,7 +81,6 @@
   </head>
   <body style="background-image: url(./asset/bg-repeat.jpg)">
     <div class="body-div" id="body-div">
-      <div id="minting-loading"><div class="spinner"></div></div>
       <!-- <div class="modal-popup">
         <div class="modal_body">
           <div id="popup-content">
@@ -128,17 +127,33 @@
       <div class="modal-popup">
         <div class="modal_body">
           <div id="funding-loading"><div class="spinner"></div></div>
-          <div>
-            <p class="title_sub_p">DAO 참여하기</p>
+          <div style="display:flex; justify-content: end;">
             <button class="btn-close-popup button-small">닫기</button>
           </div>
-          <div>
+          <div style="display: flex; flex-direction: column;align-items: center;">
+            <img src="./asset/NTD-logo_Vertical-kr.png" width="300" height="300">
+            <p class="title_sub_p claimedcnt"></p>            
+          </div>
+          <div style="display: flex; justify-content: center; width: 60%;">
+              <select id="claimcount"></select>
+              <button class="button-text-large"  style="margin-left: 10px; " onclick="nftMint() ">NFT 민팅</button>
+          </div>
+          <div id="div-minted-cards" class="frame-common">
             <div>
-              <button class="button-text-large">경매 참여</button>
+              <p
+                class="mycardscnt"
+                style="color: var(--primary-color); font-size: 20px"
+              ></p>
             </div>
+            <div class="cards-deck-outside">
+              <div id="minted_cards_deck" class="deck"></div>
+            </div>            
           </div>
         </div>
       </div>
+      <!-- Funding popup End -->
+      <div id="minting-loading"><div class="spinner"></div></div>
+
       <div
         id="banner_div"
         class="top-div"
@@ -515,7 +530,7 @@
       </div>
     </div>
     <div class="funding-btn-div">
-      <button class="button-funding btn-open-popup">
+      <button  id="btn_mint" class="button-funding btn-open-popup">
         참여하기 ( 준비 중 )
       </button>
     </div>

@@ -3,7 +3,6 @@ setTheme("aquamarine"); // initialize
 // bgImageScale();
 countDownTimer("countdown", "2022-01-06T13:00:00.000Z");
 // countDownTimer("countdown", "01/06/2022 12:33 PM");
-// let nftAddress = "0xD732C56BC9008272D780F339f97de79089c34f4B"; // rinkeby
 let nftContract;
 
 let chainId = 8217;
@@ -20,8 +19,8 @@ let mintingState = 0; // 0:minting is not allowed , 1: pre minting , 2: public m
 let multiCount = 0;
 
 const nftAddress = {
-  8217: "0x6466514368A0c2E1396BC3164495c6f90cBA92F6",
-  1001: "0xD732C56BC9008272D780F339f97de79089c34f4B",
+  8217: "0x1340daa8DB39342Bc6d66aB9e62b8f7748F666e9",
+  1001: "0x1340daa8DB39342Bc6d66aB9e62b8f7748F666e9",
 };
 
 const nftAbi = {
@@ -102,6 +101,7 @@ async function getAccount() {
       $("#content_body").show();
       $("#connect-btn").hide();
       $("#my-addr-btn").show();
+      await getTotalSupply();
     } else {
       console.log("No Klaytn account is available!");
       $("#div-myaddress").hide();
@@ -127,7 +127,10 @@ async function getAccount() {
 }
 
 function connectWallet() {
-  if (typeof window.ethereum === "undefined") {
+  if (
+    typeof window.ethereum === "undefined" &&
+    typeof window.caver === "undefined"
+  ) {
     return showMsg(noAddrMsg);
   }
 
@@ -155,7 +158,299 @@ function connectWallet() {
 async function getContracts() {
   nftContract = new web3.eth.Contract(nftAbi[chainId], nftAddress[chainId]);
   $(".nft-address").html(getLink(nftAddress[chainId], chainId));
+  await getMintingState();
 }
+
+async function getMintingState() {
+  /*
+  state
+  0 : Setup,
+  1 : PublicMint, 
+  2 : Refund,
+  3 : Finished
+  */
+  btn_mint = document.getElementById("btn_mint");
+  mintingState = await nftContract.methods.getMintingState().call();
+  console.log("mintingState =>", mintingState);
+  switch (mintingState.toString()) {
+    case "0":
+      btn_mint.disabled = true;
+      btn_mint.innerText = "민팅 준비중입니다. ";
+      break;
+    case "1":
+      btn_mint.disabled = false;
+
+      btn_mint.innerText = "민팅 참여하기 ( 준비 중 )";
+      break;
+    case "2":
+      btn_mint.disabled = false;
+      btn_mint.innerText = "NFT 환불";
+      break;
+    case "3":
+      btn_mint.disabled = true;
+      btn_mint.innerText = "민팅이 종료되었습니다.";
+      break;
+  }
+
+  await getMultiClaimCount();
+}
+
+async function getMultiClaimCount() {
+  let claimcount = document.getElementById("claimcount");
+  let optionItem = "";
+  // getMinting Fee
+  const fee_wei = await nftContract.methods.MINTING_FEE().call();
+  const fee_gwei = ethers.utils.formatUnits(fee_wei, 18);
+
+  switch (mintingState.toString()) {
+    // pre-mint
+    case "1":
+      multiCount = await nftContract.methods.MAX_PUBLIC_MULTI().call();
+      break;
+    default:
+      multiCount = 0;
+      break;
+  }
+
+  console.log("getMultiClaimCount multiCount => ", multiCount);
+
+  // if (mintingState == 1) {
+  //   $(".mintingfee").html("[ " + fee_gwei + " KLAY ]");
+  //   $(".description").html(
+  //     "<p>The price of 1 NFT is " +
+  //       fee_gwei +
+  //       " KLAY, and you can claim up to " +
+  //       multiCount +
+  //       " at a time.</p>"
+  //   );
+  // }
+
+  // // console.log("multiCount -> ", multiCount);
+
+  for (let i = 1; i < parseInt(multiCount) + 1; i++) {
+    if (i === 1) {
+      optionItem =
+        optionItem +
+        '<option value="' +
+        i +
+        '" selected="selected">' +
+        i +
+        "</option>";
+    } else {
+      optionItem = optionItem + '<option value="' + i + '" >' + i + "</option>";
+    }
+  }
+  claimcount.innerHTML = optionItem;
+}
+
+async function getTotalSupply() {
+  // clearInterval(totalsupplyInterval);
+
+  let maxCnt = 0;
+  let mintedCnt = 0;
+  mintedCnt = await nftContract.methods.totalSupply().call();
+  maxCnt = await checkMintingState(mintedCnt);
+
+  console.log("getTotalSupply   mintedCnt=> ", mintedCnt);
+
+  $(".claimedcnt").html(mintedCnt + "/" + maxCnt);
+  showCardList("minted_cards_deck", null);
+}
+
+async function checkMintingState(_mintedCnt) {
+  /*
+  state
+  0 : Setup,
+  1 : PublicMint, 
+  2 : Refund,
+  3 : Finished
+  */
+
+  let maxCnt = 0;
+  btn_mint = document.getElementById("btn_mint");
+  switch (mintingState.toString()) {
+    case "0":
+      break;
+    case "1":
+      // public mint
+      maxCnt = await nftContract.methods.MAX_PUBLIC_ID().call();
+      if (parseInt(_mintedCnt) == parseInt(maxCnt)) {
+        btn_mint.disabled = true;
+      } else {
+        btn_mint.disabled = false;
+      }
+      break;
+    case "2":
+      // refund
+      btn_mint.disabled = false;
+      break;
+  }
+  return maxCnt;
+}
+
+async function nftMint() {
+  try {
+    $("#minting-loading").show();
+
+    console.log("mintingState -> ", mintingState);
+    // getMinting Fee
+    const fee_wei = await nftContract.methods.MINTING_FEE().call();
+    const mintingCount = $("#claimcount option:selected").val();
+
+    const wei_value = ethers.BigNumber.from(fee_wei).mul(mintingCount);
+    const total_mintingfee = ethers.utils.formatEther(wei_value);
+
+    // console.log("total_mintingfee =>", total_mintingfee);
+
+    switch (mintingState.toString()) {
+      case "1":
+        // public minting
+        console.log("public Minting");
+
+        nftContract.methods
+          .publicMint(mintingCount)
+          .send({
+            from: myAddr,
+            value: ethers.utils.parseEther(total_mintingfee.toString()),
+          })
+          .on("transactionHash", (txid) => {
+            // console.log(`txid: ${txid}`)
+          })
+          .once("allEvents", (allEvents) => {
+            // console.log('allEvents')
+            // console.log(transferEvent)
+          })
+          .once("Transfer", (transferEvent) => {
+            // console.log('trasferEvent', transferEvent)
+          })
+          .once("receipt", (receipt) => {
+            $("#minting-loading").hide();
+            console.log("receipt => ", receipt);
+
+            setMintResult(receipt);
+          })
+          .on("error", (error) => {
+            $("#minting-loading").hide();
+            console.log(error);
+          });
+        break;
+    }
+  } catch (error) {
+    console.log("error =>", error);
+    $("#minting-loading").hide();
+  }
+
+  async function setMintResult(receipt) {
+    if (receipt.status) {
+      // $("#div-mint-result").show();
+      let resultTokenids = [];
+      if (Array.isArray(receipt.events.Transfer)) {
+        receipt.events.Transfer.map((tranfervalue) => {
+          // console.log(
+          //   "receipt.events.Transfer => ",
+          //   tranfervalue.returnValues.tokenId
+          // );
+          resultTokenids.push(tranfervalue.returnValues.tokenId);
+          // console.log("resultTokenids => ", resultTokenids);
+        });
+      } else {
+        // console.log(
+        //   "receipt.events.Transfer=>",
+        //   receipt.events.Transfer.returnValues.tokenId
+        // );
+        resultTokenids.push(receipt.events.Transfer.returnValues.tokenId);
+        // console.log("resultTokenids => ", resultTokenids);
+      }
+      console.log("resultTokenids => ", resultTokenids);
+      getTotalSupply();
+    }
+  }
+}
+
+getCardInfo = async (tokenId) => {
+  try {
+    let tokenInfoBase64 = await nftContract.methods.tokenURI(tokenId).call();
+    let jsonInfo = JSON.parse(atob(tokenInfoBase64.substring(29)));
+    return jsonInfo;
+  } catch (errGetCardInfo) {
+    console.log(errGetCardInfo);
+    return "";
+  }
+};
+
+showCardList = async (kind, tokenIds) => {
+  console.log("showCardList kind =>", kind);
+  console.log("showCardList tokenIds =>", tokenIds);
+  $("#minting-loading").show();
+  let claimTokenIdList = [];
+
+  claimTokenIdList = await nftContract.methods.tokensOf(myAddr).call();
+
+  // let tokenId = claimTokenIdList;
+  let tokenId = [
+    1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+    22, 23, 24, 25, 26, 27, 28, 29, 30, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12,
+    13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30,
+  ];
+  // let tokenId = [];
+
+  if (tokenId.length == 0) {
+    $("#div-minted-cards").hide();
+    $("#minting-loading").hide();
+    return;
+  } else {
+    $("#div-minted-cards").show();
+  }
+  let arr = [];
+
+  const cardInfoList = await Promise.all(
+    tokenId.map((id) => {
+      return getCardInfo(id);
+    })
+  );
+  cardInfoList.forEach((info, i) => {
+    arr.push({ tokenId: tokenId[i], image: info.image });
+  });
+
+  arr.sort(function (a, b) {
+    return parseFloat(a.tokenId) - parseFloat(b.tokenId);
+  });
+
+  // console.log(arr);
+  function cardsDeck(arr) {
+    document.getElementById("minted_cards_deck").innerHTML = "";
+
+    for (let i = 0; i < arr.length; i++) {
+      let card = document.createElement("div");
+      let imgBox = document.createElement("div");
+      let descriptionBox = document.createElement("div");
+      let tokenId = document.createElement("div");
+      let label = document.createElement("div");
+      card.className = "card";
+      imgBox.className = "imgbox";
+      descriptionBox.className = "descriptionBox";
+      tokenId.className = "tokenID";
+
+      label.innerHTML = "";
+      imgBox.innerHTML = `<label class="card-img" onclick="viewInOpensea(${arr[i].tokenId})" />
+          <img style="width: auto; height: auto; max-width: 200px; "  src="${arr[i].image}" ></img>
+          `;
+
+      tokenId.innerHTML = `#${arr[i].tokenId} </label>`;
+      card.appendChild(imgBox);
+      card.appendChild(descriptionBox);
+      descriptionBox.appendChild(tokenId);
+      card.style.marginBottom = "10px";
+
+      $(".mycardscnt").html("내 NFT : " + arr.length);
+
+      document.getElementById("minted_cards_deck").appendChild(card);
+    }
+  }
+
+  cardsDeck(arr);
+  $("#minting-loading").hide();
+};
 
 function showFullStatement(kind) {
   switch (kind) {
@@ -209,12 +504,13 @@ function showBanner() {
   }, 5000);
 }
 
+const body = document.querySelector("body");
 const modal = document.querySelector(".modal-popup");
 const btnOpenPopup = document.querySelector(".btn-open-popup");
 const btnClosePopup = document.querySelector(".btn-close-popup");
 
 btnOpenPopup.addEventListener("click", () => {
-  // modal.classList.toggle("show");
+  modal.classList.toggle("show");
   // const target = document.getElementById("bonus-claim-btn");
   // target.disabled = true;
   // if (modal.classList.contains("show")) {
@@ -224,20 +520,20 @@ btnOpenPopup.addEventListener("click", () => {
 
 btnClosePopup.addEventListener("click", () => {
   modal.classList.toggle("show");
-  bonus_claim_complete.innerHTML = "";
+  // bonus_claim_complete.innerHTML = "";
 
-  const target = document.getElementById("bonus-claim-btn");
-  target.disabled = true;
+  // const target = document.getElementById("bonus-claim-btn");
+  // target.disabled = true;
 
-  if (!modal.classList.contains("show")) {
-    body.style.overflow = "auto";
-  }
+  // if (!modal.classList.contains("show")) {
+  //   body.style.overflow = "auto";
+  // }
 });
 
 modal.addEventListener("click", (event) => {
   if (event.target === modal) {
     modal.classList.toggle("show");
-    bonus_claim_complete.innerHTML = "";
+    // bonus_claim_complete.innerHTML = "";
 
     if (!modal.classList.contains("show")) {
       body.style.overflow = "auto";
