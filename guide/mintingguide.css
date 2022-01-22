@@ -1,0 +1,38 @@
+@charset "utf-8";
+
+@font-face {
+  font-family: "NotoSerifKR";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NotoSerifKR.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,
+body {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0 auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-family: "NotoSerifKR", sans-serif;
+}
+
+li {
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.main-div {
+  justify-content: center;
+  display: flex;
+}
+
+.content-div {
+  max-width: 800px;
+  width: 100%;
+}
+.mint-img {
+  width: 300px;
+}

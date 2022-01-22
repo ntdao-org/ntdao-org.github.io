@@ -108,6 +108,10 @@
           >
             <img width="40" height="40" src="./asset/icon-twitter.png" />
           </a>
+          <button class="btn-close-popup button-small" onclick="goMintGuide() ">
+            민팅 가이드보기
+          </button>
+
           <button
             id="connect-btn"
             class="button-small"
@@ -144,6 +148,7 @@
           ></h2>
         </div>
       </div>
+
       <div class="content-div">
         <div style="margin-top: 55px; display: inline-flex">
           <div class="funding-state-div">
@@ -448,33 +453,27 @@
           </div>
         </div>
       </div>
-      <div
-        style="background-color: white; padding-top: 20px; padding-bottom: 20px"
-      >
-        <p class="title_p" style="width: 100%; margin-bottom: 20px">
-          함께하는 팀과 미디어
-        </p>
-        <div style="flex-direction: row; text-align: center">
-          <p style="font-size: 14px">아톰릭스랩, 한재선(그라운드X 대표)</p>
-          <p style="font-size: 14px">
-            리도(LEEDO) 프로젝트 , 서울 이더리움 밋업, 디센트, 팩트경제신문,
-            메타콩즈, 토큰포스트, 떡방앗간 코인 이야기, 법무법인 이제
-          </p>
-        </div>
-      </div>
       <!-- Funding popup  -->
       <div class="modal-popup">
         <div class="modal_body">
           <div style="display: flex; justify-content: end">
+            <button
+              class="btn-close-popup button-small"
+              onclick="goMintGuide() "
+              style="margin-right: 10px"
+            >
+              민팅 가이드보기
+            </button>
             <button class="btn-close-popup button-small">닫기</button>
           </div>
           <div
             style="display: flex; flex-direction: column; align-items: center"
           >
+            <p class="title_sub_p mintinnfee"></p>
             <img
               src="./asset/NTD-logo_Vertical-kr.png"
-              width="300"
-              height="300"
+              width="200"
+              height="200"
             />
             <p class="title_sub_p claimedcnt"></p>
           </div>
@@ -502,6 +501,24 @@
         </div>
       </div>
       <!-- Funding popup End -->
+      <div
+        style="background-color: white; padding-top: 20px; padding-bottom: 20px"
+      >
+        <p class="title_p" style="width: 100%; margin-bottom: 20px">
+          함께하는 팀과 미디어
+        </p>
+        <div style="flex-direction: row; text-align: center">
+          <p style="font-size: 14px">아톰릭스랩, 한재선(그라운드X 대표)</p>
+          <p style="font-size: 14px">
+            리도(LEEDO) 프로젝트 , 서울 이더리움 밋업, 디센트, 팩트경제신문,
+            메타콩즈, 토큰포스트, 떡방앗간 코인 이야기, 법무법인 이제,
+          </p>
+          <p style="font-size: 14px">
+            코인데스크 코리아 ,포트리스 아레나, coineasy
+          </p>
+        </div>
+      </div>
+
       <div id="minting-loading"><div class="spinner"></div></div>
     </div>
     <div class="funding-btn-div" id="funding-btn-div">
@@ -509,7 +526,19 @@
         참여하기 ( 준비 중 )
       </button>
     </div>
-
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-LGYQ6RQ6DX"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-LGYQ6RQ6DX");
+    </script>
     <!-- Script -->
     <script src="./js/1.2.11-web3-min.js"></script>
     <script src="./js/5.2-umd-min.js" type="application/javascript"></script>

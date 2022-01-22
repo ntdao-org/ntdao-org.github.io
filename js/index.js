@@ -318,6 +318,7 @@ async function getTotalSupply() {
 
   const fee_wei = await nftContract.methods.MINTING_FEE().call();
 
+  const fee_gwei = ethers.utils.formatEther(fee_wei);
   const target_fund_klay_wei = ethers.BigNumber.from(fee_wei).mul(maxCnt);
   const current_fund_klay_wei = ethers.BigNumber.from(fee_wei).mul(mintedCnt);
 
@@ -338,6 +339,8 @@ async function getTotalSupply() {
     current_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
 
   $(".claimedcnt").html(mintedCnt + "/" + maxCnt);
+  $(".mintinnfee").html("[ " + fee_gwei + " KLAY ]");
+
   showCardList("minted_cards_deck", null);
 }
 
@@ -580,7 +583,7 @@ showCardList = async (kind, tokenIds) => {
       descriptionBox.className = "descriptionBox";
       tokenId.className = "tokenID";
 
-      console.log("arr[i].image => ", arr[i].image);
+      // console.log("arr[i].image => ", arr[i].image);
 
       label.innerHTML = "";
       img_url =
@@ -590,7 +593,7 @@ showCardList = async (kind, tokenIds) => {
         arr[i].image +
         '"/>';
 
-      console.log("img_url => ", img_url);
+      // console.log("img_url => ", img_url);
 
       imgBox.innerHTML = img_url;
       tokenId.innerHTML = `#${arr[i].tokenId} </label>`;

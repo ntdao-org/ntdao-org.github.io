@@ -54,6 +54,9 @@ function getOpenSeaLink(chainId) {
   );
 }
 
+function goMintGuide() {
+  var popup = window.open("./guide/mintingguide.html");
+}
 function getWindowWidth() {
   var width =
     window.innerWidth ||
