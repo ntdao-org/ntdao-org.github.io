@@ -439,11 +439,29 @@ select {
 .cards-deck-outside {
   overflow-y: auto;
   flex-wrap: wrap;
-  max-height: 200px;
+  max-height: 300px;
 }
 .deck {
   display: flex;
   flex-wrap: wrap;
   margin: 10px;
   justify-content: center;
+}
+
+.card .descriptionBox {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.checkbox-label {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+}
+
+.checkbg {
+  /* filter: hue-rotate(210deg); */
+  accent-color: #4b3524;
 }

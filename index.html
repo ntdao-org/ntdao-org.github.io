@@ -454,7 +454,7 @@
         </div>
       </div>
       <!-- Funding popup  -->
-      <div class="modal-popup">
+      <div class="modal-popup modal-mint">
         <div class="modal_body">
           <div style="display: flex; justify-content: end">
             <button
@@ -464,33 +464,43 @@
             >
               민팅 가이드보기
             </button>
-            <button class="btn-close-popup button-small">닫기</button>
+            <button class="btn-close-popup-mint button-small">닫기</button>
           </div>
           <div
             style="display: flex; flex-direction: column; align-items: center"
           >
-            <p class="title_sub_p mintinnfee"></p>
+            <p class="title_sub_p mintinnfee" id="mintinnfee"></p>
             <img
               src="./asset/NTD-logo_Vertical-kr.png"
               width="200"
               height="200"
             />
-            <p class="title_sub_p claimedcnt"></p>
+            <p class="title_sub_p claimedcnt" id="claimedcnt"></p>
           </div>
           <div style="display: flex; justify-content: center; width: 60%">
             <select id="claimcount"></select>
             <button
               class="button-text-large"
               style="margin-left: 10px"
+              id="btn_minting"
               onclick="nftMint() "
             >
               NFT 민팅
             </button>
           </div>
+          <div>
+            <p
+              id="refund_desc"
+              style="color: var(--primary-color); font-size: 16px"
+            >
+              환불 할 NFT 를 선택 후 NFT 환불 버튼을 눌러주세요.
+            </p>
+          </div>
           <div id="div-minted-cards" class="frame-common">
             <div>
               <p
                 class="mycardscnt"
+                id="my_card_cnt"
                 style="color: var(--primary-color); font-size: 20px"
               ></p>
             </div>
@@ -501,6 +511,7 @@
         </div>
       </div>
       <!-- Funding popup End -->
+
       <div
         style="background-color: white; padding-top: 20px; padding-bottom: 20px"
       >

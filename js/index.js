@@ -19,6 +19,8 @@ let mintingState = 0; // 0:minting is not allowed , 1: pre minting , 2: public m
 let multiCount = 0;
 let isKaikas = false;
 
+let checkInTokenIdList = [];
+
 const openseaurl = {
   8217: "https://opensea.io/assets/0x1340daa8db39342bc6d66ab9e62b8f7748f666e9/",
   1001: "https://testnets.opensea.io/assets/baobab/0x3DF50E3B38Fb64543b268253E9f6a1865fcdac0B/",
@@ -263,6 +265,26 @@ async function getMultiClaimCount() {
     // pre-mint
     case "1":
       multiCount = await nftContract.methods.MAX_PUBLIC_MULTI().call();
+      for (let i = 1; i < parseInt(multiCount) + 1; i++) {
+        if (i === 1) {
+          optionItem =
+            optionItem +
+            '<option value="' +
+            i +
+            '" selected="selected">' +
+            i +
+            "</option>";
+        } else {
+          optionItem =
+            optionItem + '<option value="' + i + '" >' + i + "</option>";
+        }
+      }
+      claimcount.innerHTML = optionItem;
+      $("#claimcount").show();
+      break;
+    case "2":
+      multiCount = await nftContract.methods.MAX_PUBLIC_MULTI().call();
+      $("#claimcount").hide();
       break;
     default:
       multiCount = 0;
@@ -283,21 +305,6 @@ async function getMultiClaimCount() {
   // }
 
   // // console.log("multiCount -> ", multiCount);
-
-  for (let i = 1; i < parseInt(multiCount) + 1; i++) {
-    if (i === 1) {
-      optionItem =
-        optionItem +
-        '<option value="' +
-        i +
-        '" selected="selected">' +
-        i +
-        "</option>";
-    } else {
-      optionItem = optionItem + '<option value="' + i + '" >' + i + "</option>";
-    }
-  }
-  claimcount.innerHTML = optionItem;
 }
 
 async function getTotalSupply() {
@@ -308,6 +315,7 @@ async function getTotalSupply() {
   mintedCnt = await nftContract.methods.totalSupply().call();
   maxCnt = await checkMintingState(mintedCnt);
 
+  console.log("getTotalSupply   maxCnt=> ", maxCnt);
   console.log("getTotalSupply   mintedCnt=> ", mintedCnt);
 
   let target_fund_cnt = document.getElementById("target_fund_cnt");
@@ -355,12 +363,12 @@ async function checkMintingState(_mintedCnt) {
 
   let maxCnt = 0;
   btn_mint = document.getElementById("btn_mint");
+  maxCnt = await nftContract.methods.MAX_PUBLIC_ID().call();
   switch (mintingState.toString()) {
     case "0":
       break;
     case "1":
       // public mint
-      maxCnt = await nftContract.methods.MAX_PUBLIC_ID().call();
       if (parseInt(_mintedCnt) == parseInt(maxCnt)) {
         btn_mint.disabled = true;
       } else {
@@ -381,6 +389,10 @@ async function checkMintingState(_mintedCnt) {
 }
 
 async function nftMint() {
+  if (mintingState == 2) {
+    nftRefund();
+    return;
+  }
   try {
     $("#minting-loading").show();
 
@@ -505,6 +517,50 @@ async function nftMint() {
   }
 }
 
+async function nftRefund() {
+  console.log("nftRefund checkInTokenIdList => ", checkInTokenIdList);
+  // try {
+  //   $("#minting-loading").show();
+
+  //   switch (mintingState.toString()) {
+  //     case "2":
+  //       // Refund
+  //       console.log("Refund");
+
+  //       nftContract.methods
+  //         .publicMint(checkInTokenIdList)
+  //         .send({
+  //           from: myAddr,
+  //         })
+  //         .on("transactionHash", (txid) => {
+  //           // console.log(`txid: ${txid}`)
+  //         })
+  //         .once("allEvents", (allEvents) => {
+  //           // console.log('allEvents')
+  //           // console.log(transferEvent)
+  //         })
+  //         .once("Transfer", (transferEvent) => {
+  //           // console.log('trasferEvent', transferEvent)
+  //         })
+  //         .once("receipt", (receipt) => {
+  //           $("#minting-loading").hide();
+  //           console.log("receipt => ", receipt);
+
+  //           showCardList("minted_cards_deck", null);
+  //         })
+  //         .on("error", (error) => {
+  //           $("#minting-loading").hide();
+  //           console.log(error);
+  //         });
+
+  //       break;
+  //   }
+  // } catch (error) {
+  //   console.log("error =>", error);
+  //   $("#minting-loading").hide();
+  // }
+}
+
 getCardInfo = async (tokenId) => {
   try {
     let tokenInfoBase64 = await nftContract.methods.tokenURI(tokenId).call();
@@ -521,7 +577,7 @@ showCardList = async (kind, tokenIds) => {
   // console.log("showCardList tokenIds =>", tokenIds);
   $("#minting-loading").show();
   let claimTokenIdList = [];
-
+  checkInTokenIdList = [];
   claimTokenIdList = await nftContract.methods.tokensOf(myAddr).call();
 
   let tokenId = claimTokenIdList;
@@ -578,6 +634,8 @@ showCardList = async (kind, tokenIds) => {
       let descriptionBox = document.createElement("div");
       let tokenId = document.createElement("div");
       let label = document.createElement("div");
+      let checkBox = document.createElement("div");
+
       card.className = "card";
       imgBox.className = "imgbox";
       descriptionBox.className = "descriptionBox";
@@ -597,18 +655,64 @@ showCardList = async (kind, tokenIds) => {
 
       imgBox.innerHTML = img_url;
       tokenId.innerHTML = `#${arr[i].tokenId} </label>`;
+      if (mintingState == 2) {
+        // refund
+        checkBox.innerHTML = `<input id="checkBox${arr[i].tokenId}" style="width:20px;height:20px; " type="checkbox" class="checkbg" value="${arr[i].tokenId}" onclick ="checkBoxClick1(this)"/>`;
+      }
+
       card.appendChild(imgBox);
       card.appendChild(descriptionBox);
-      descriptionBox.appendChild(tokenId);
       card.style.marginBottom = "10px";
+      descriptionBox.appendChild(tokenId);
+      if (mintingState == 2) {
+        // refund
 
-      $(".mycardscnt").html("내 NFT : " + arr.length);
+        descriptionBox.appendChild(checkBox);
+        document.getElementById("my_card_cnt").innerHTML =
+          '<p style="margin-bottom: 5px;font-size: 14px; color: #818181;">( ' +
+          checkInTokenIdList.length +
+          " / 20 ) 트랜잭션 당 최대 20장 까지 가능.</p>";
+      } else {
+        $(".mycardscnt").html("내 NFT : " + arr.length);
+      }
 
       document.getElementById("minted_cards_deck").appendChild(card);
     }
   }
-
   cardsDeck(arr);
+
+  checkBoxClick1 = (e) => {
+    // console.log(e)
+    // console.log(e.checked)
+    // console.log(e.value)
+
+    if (e.checked) {
+      if (checkInTokenIdList.length == 20) {
+        alert("트랜잭션 당 최대 20개까지 선택할 수 있습니다.");
+        e.checked = false;
+      } else {
+        const target = document.getElementById("btn_minting");
+        target.disabled = false;
+        checkInTokenIdList.push(e.value);
+      }
+    } else {
+      // console.log(claimTokenIdList)
+      // claimTokenIdList.indexOf(e.value);
+      checkInTokenIdList.splice(checkInTokenIdList.indexOf(e.value), 1);
+      if (checkInTokenIdList.length == 0) {
+        const target = document.getElementById("btn_minting");
+        target.disabled = true;
+      } else {
+        const target = document.getElementById("btn_minting");
+        target.disabled = false;
+      }
+    }
+    document.getElementById("my_card_cnt").innerHTML =
+      '<p style="margin-bottom: 5px;font-size: 14px; color: #818181;">( ' +
+      checkInTokenIdList.length +
+      " / 20 ) 트랜잭션 당 최대 20장 까지 가능.</p>";
+  };
+
   $("#minting-loading").hide();
 };
 
@@ -670,27 +774,46 @@ function showBanner() {
 }
 
 const body = document.querySelector("body");
-const modal = document.querySelector(".modal-popup");
+const modal_mint = document.querySelector(".modal-mint");
 const btnOpenPopup = document.querySelector(".btn-open-popup");
-const btnClosePopup = document.querySelector(".btn-close-popup");
+const btnClosePopupMint = document.querySelector(".btn-close-popup-mint");
 
+const btn_minting = document.getElementById("btn_minting");
 btnOpenPopup.addEventListener("click", () => {
-  modal.classList.toggle("show");
+  const status = modal_mint.classList.toggle("show");
+  switch (mintingState.toString()) {
+    case "1":
+      btn_minting.innerText = "NFT 민팅";
+      $("#claimedcnt").show();
+      $("#mintinnfee").show();
+      $("#refund_desc").hide();
+
+      break;
+    case "2":
+      btn_minting.innerText = "NFT 환불";
+      const target = document.getElementById("btn_minting");
+      target.disabled = true;
+      $("#claimedcnt").hide();
+      $("#mintinnfee").hide();
+      $("#refund_desc").show();
+
+      break;
+  }
   $("#funding-btn-div").hide();
 });
 
-btnClosePopup.addEventListener("click", () => {
-  modal.classList.toggle("show");
+btnClosePopupMint.addEventListener("click", () => {
+  modal_mint.classList.toggle("show");
   $("#funding-btn-div").show();
 });
 
-modal.addEventListener("click", (event) => {
-  if (event.target === modal) {
-    modal.classList.toggle("show");
+modal_mint.addEventListener("click", (event) => {
+  if (event.target === modal_mint) {
+    modal_mint.classList.toggle("show");
     $("#funding-btn-div").show();
     // bonus_claim_complete.innerHTML = "";
 
-    if (!modal.classList.contains("show")) {
+    if (!modal_mint.classList.contains("show")) {
       body.style.overflow = "auto";
     }
   }
