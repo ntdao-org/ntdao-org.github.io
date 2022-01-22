@@ -21,12 +21,12 @@ let isKaikas = false;
 
 const openseaurl = {
   8217: "https://opensea.io/assets/0x1340daa8db39342bc6d66ab9e62b8f7748f666e9/",
-  1001: "https://testnets.opensea.io/assets/baobab/0x1340daa8db39342bc6d66ab9e62b8f7748f666e9/",
+  1001: "https://testnets.opensea.io/assets/baobab/0x3DF50E3B38Fb64543b268253E9f6a1865fcdac0B/",
 };
 
 const nftAddress = {
   8217: "0x1340daa8DB39342Bc6d66aB9e62b8f7748F666e9",
-  1001: "0x1340daa8DB39342Bc6d66aB9e62b8f7748F666e9",
+  1001: "0x3DF50E3B38Fb64543b268253E9f6a1865fcdac0B",
 };
 
 const nftAbi = {
@@ -580,18 +580,19 @@ showCardList = async (kind, tokenIds) => {
       descriptionBox.className = "descriptionBox";
       tokenId.className = "tokenID";
 
+      console.log("arr[i].image => ", arr[i].image);
+
       label.innerHTML = "";
-      // imgBox.innerHTML =
-      //   '<label class="card-img" onclick="viewInOpensea(${' +
-      //   arr[i].tokenId +
-      //   '})" /><img style="width: auto; height: auto; max-width: 200px; "  src="${' +
-      //   arr[i].image +
-      //   '}" ></img>';
-      imgBox.innerHTML =
+      img_url =
         '<label class="card-img" onclick="viewInOpensea(' +
         arr[i].tokenId +
-        ')" /><img style="width: auto; height: auto; max-width: 200px; "  src="./asset/NTD-logo_Vertical-en.jpg" ></img>';
+        ')"/><img width="200" height="200" type="image/svg+xml" src="' +
+        arr[i].image +
+        '"/>';
 
+      console.log("img_url => ", img_url);
+
+      imgBox.innerHTML = img_url;
       tokenId.innerHTML = `#${arr[i].tokenId} </label>`;
       card.appendChild(imgBox);
       card.appendChild(descriptionBox);

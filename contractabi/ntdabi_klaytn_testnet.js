@@ -1,12 +1,6 @@
 let ntdabi_klaytn_testnet = [
   {
-    inputs: [
-      {
-        internalType: "string",
-        name: "baseImgUrl_",
-        type: "string",
-      },
-    ],
+    inputs: [],
     stateMutability: "nonpayable",
     type: "constructor",
   },
@@ -293,6 +287,25 @@ let ntdabi_klaytn_testnet = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "_tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "getAttrs",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "getBalance",
     outputs: [
@@ -351,26 +364,7 @@ let ntdabi_klaytn_testnet = [
         type: "uint256",
       },
     ],
-    name: "getImgIdx",
-    outputs: [
-      {
-        internalType: "string",
-        name: "",
-        type: "string",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "_tokenId",
-        type: "uint256",
-      },
-    ],
-    name: "getImgUrl",
+    name: "getImg",
     outputs: [
       {
         internalType: "string",
@@ -465,6 +459,19 @@ let ntdabi_klaytn_testnet = [
   },
   {
     inputs: [],
+    name: "notRefundCount",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "owner",
     outputs: [
       {
@@ -519,6 +526,25 @@ let ntdabi_klaytn_testnet = [
     name: "refund",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tokenId_",
+        type: "uint256",
+      },
+    ],
+    name: "refundState",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -833,19 +859,6 @@ let ntdabi_klaytn_testnet = [
       },
     ],
     name: "transferOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "string",
-        name: "_url",
-        type: "string",
-      },
-    ],
-    name: "updateBaseImgUrl",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
