@@ -519,46 +519,89 @@ async function nftMint() {
 
 async function nftRefund() {
   console.log("nftRefund checkInTokenIdList => ", checkInTokenIdList);
-  // try {
-  //   $("#minting-loading").show();
+  try {
+    $("#minting-loading").show();
 
-  //   switch (mintingState.toString()) {
-  //     case "2":
-  //       // Refund
-  //       console.log("Refund");
+    switch (mintingState.toString()) {
+      case "2":
+        // Refund
+        console.log("Refund");
 
-  //       nftContract.methods
-  //         .publicMint(checkInTokenIdList)
-  //         .send({
-  //           from: myAddr,
-  //         })
-  //         .on("transactionHash", (txid) => {
-  //           // console.log(`txid: ${txid}`)
-  //         })
-  //         .once("allEvents", (allEvents) => {
-  //           // console.log('allEvents')
-  //           // console.log(transferEvent)
-  //         })
-  //         .once("Transfer", (transferEvent) => {
-  //           // console.log('trasferEvent', transferEvent)
-  //         })
-  //         .once("receipt", (receipt) => {
-  //           $("#minting-loading").hide();
-  //           console.log("receipt => ", receipt);
+        if (isKaikas) {
+          let estmated_gas;
+          await nftContract.methods
+            .refund(checkInTokenIdList)
+            .estimateGas({
+              from: myAddr,
+            })
+            .then(function (gasAmount) {
+              estmated_gas = gasAmount;
+              console.log("Gas => ", gasAmount);
+            })
+            .catch(function (error) {
+              console.log("Gas error => ", error);
+            });
 
-  //           showCardList("minted_cards_deck", null);
-  //         })
-  //         .on("error", (error) => {
-  //           $("#minting-loading").hide();
-  //           console.log(error);
-  //         });
+          nftContract.methods
+            .refund(checkInTokenIdList)
+            .send({
+              from: myAddr,
+              gas: estmated_gas,
+            })
+            .on("transactionHash", (txid) => {
+              // console.log(`txid: ${txid}`)
+            })
+            .once("allEvents", (allEvents) => {
+              // console.log('allEvents')
+              // console.log(transferEvent)
+            })
+            .once("Transfer", (transferEvent) => {
+              // console.log('trasferEvent', transferEvent)
+            })
+            .once("receipt", (receipt) => {
+              $("#minting-loading").hide();
+              console.log("receipt => ", receipt);
 
-  //       break;
-  //   }
-  // } catch (error) {
-  //   console.log("error =>", error);
-  //   $("#minting-loading").hide();
-  // }
+              showCardList("minted_cards_deck", null);
+            })
+            .on("error", (error) => {
+              $("#minting-loading").hide();
+              console.log(error);
+            });
+        } else {
+          nftContract.methods
+            .refund(checkInTokenIdList)
+            .send({
+              from: myAddr,
+            })
+            .on("transactionHash", (txid) => {
+              // console.log(`txid: ${txid}`)
+            })
+            .once("allEvents", (allEvents) => {
+              // console.log('allEvents')
+              // console.log(transferEvent)
+            })
+            .once("Transfer", (transferEvent) => {
+              // console.log('trasferEvent', transferEvent)
+            })
+            .once("receipt", (receipt) => {
+              $("#minting-loading").hide();
+              console.log("receipt => ", receipt);
+
+              showCardList("minted_cards_deck", null);
+            })
+            .on("error", (error) => {
+              $("#minting-loading").hide();
+              console.log(error);
+            });
+        }
+
+        break;
+    }
+  } catch (error) {
+    console.log("error =>", error);
+    $("#minting-loading").hide();
+  }
 }
 
 getCardInfo = async (tokenId) => {
