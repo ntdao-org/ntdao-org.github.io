@@ -625,10 +625,10 @@ function showFullStatement(kind) {
 
       if (x.style.display === "none") {
         x.style.display = "block";
-        btn_state.innerText = "- 간략히";
+        btn_state.innerText = "- 간략히 보기";
       } else {
         x.style.display = "none";
-        btn_state.innerText = "+ 전문보기";
+        btn_state.innerText = "+ 펼쳐보기";
       }
       break;
     case "2":
@@ -637,10 +637,10 @@ function showFullStatement(kind) {
 
       if (y.style.display === "none") {
         y.style.display = "block";
-        btn_desc1.innerText = "- 간략히";
+        btn_desc1.innerText = "- 간략히 보기";
       } else {
         y.style.display = "none";
-        btn_desc1.innerText = "+ 전문보기";
+        btn_desc1.innerText = "+ 펼쳐보기";
       }
       break;
     case "3":
@@ -649,10 +649,10 @@ function showFullStatement(kind) {
 
       if (z.style.display === "none") {
         z.style.display = "block";
-        btn_desc2.innerText = "- 간략히";
+        btn_desc2.innerText = "- 간략히 보기";
       } else {
         z.style.display = "none";
-        btn_desc2.innerText = "+ 전문보기";
+        btn_desc2.innerText = "+ 펼쳐보기";
       }
       break;
   }
