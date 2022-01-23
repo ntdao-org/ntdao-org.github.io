@@ -467,7 +467,7 @@
                   id="btn_show_desc_2"
                   onclick="showFullStatement('3')"
                 >
-                  + 펼처보기
+                  + 펼쳐보기
                 </button>
               </div>
             </div>
@@ -490,7 +490,11 @@
           <div
             style="display: flex; flex-direction: column; align-items: center"
           >
-            <p class="title_sub_p mintinnfee" id="mintinnfee"></p>
+            <p
+              class="title_sub_p mintinnfee"
+              id="mintinnfee"
+              style="margin-top: 0px; margin-bottom: 0px"
+            ></p>
             <img
               src="./asset/NTD-logo_Vertical-kr.png"
               width="200"
@@ -498,24 +502,60 @@
             />
             <p class="title_sub_p claimedcnt" id="claimedcnt"></p>
           </div>
-          <div style="display: flex; justify-content: center; width: 60%">
-            <select id="claimcount"></select>
-            <button
-              class="button-text-large"
-              style="margin-left: 10px"
-              id="btn_minting"
-              onclick="nftMint() "
+          <div id="mintin_btn_div">
+            <div id="terms-agree-div">
+              <label class="check-label">
+                <input
+                  type="checkbox"
+                  id="terms_agree"
+                  class="checkbg check-input chk-terms_agree"
+                  style="width: 20px; height: 20px"
+                  onclick="termsAgreeCheck(this)"
+                />
+                <a
+                  target="_blank"
+                  style="
+                    color: var(--primary-color);
+                    font-size: 16px;
+                    text-decoration: underline;
+                  "
+                  href="https://docs.google.com/document/d/1nqhX21VAkqSotlkldTpjjGk9GDXyUBvl/edit?usp=sharing&ouid=117519044919066871637&rtpof=true&sd=true"
+                  >국보DAO 조합 규약 확인 및 동의<strong>(필수)</strong></a
+                >
+              </label>
+              <p
+                id="terms_agree"
+                style="color: var(--primary-color); font-size: 16px"
+              >
+                국보DAO NFT를 민팅하게 되면 국보DAO 조합원이 됩니다. 조합 규약
+                내용에 동의해야만 민팅이 가능합니다.
+              </p>
+            </div>
+
+            <div
+              style="display: flex; justify-content: center; width: 100%"
+              id="mint-div-frame"
+              class="mint_btn_div"
             >
-              NFT 민팅
-            </button>
-          </div>
-          <div>
-            <p
-              id="refund_desc"
-              style="color: var(--primary-color); font-size: 16px"
-            >
-              환불 할 NFT 를 선택 후 NFT 환불 버튼을 눌러주세요.
-            </p>
+              <select id="claimcount"></select>
+
+              <button
+                class="button-text-large"
+                style="margin-left: 10px"
+                id="btn_minting"
+                onclick="nftMint() "
+              >
+                NFT 민팅
+              </button>
+            </div>
+            <div>
+              <p
+                id="refund_desc"
+                style="color: var(--primary-color); font-size: 16px"
+              >
+                환불 할 NFT 를 선택 후 NFT 환불 버튼을 눌러주세요.
+              </p>
+            </div>
           </div>
           <div id="div-minted-cards" class="frame-common">
             <div>
@@ -568,15 +608,15 @@
           </p>
           <p style="font-size: 14px">
             트위트위츠, 해피터틀즈, 쿨곰, Dope Deer, NFT'z, Gaia Protocol,
-            Kepler-452b, 퍼플래빗, Crypto study group,
-            오픈퍼블릭스,
+            Kepler-452b, 퍼플래빗, Crypto study group, 오픈퍼블릭스,
           </p>
           <p style="font-size: 14px">
-            클레이지 피플, 모스랜드, 클레이체크, 깐부테이블, Animals Punks, U KOREAN, N2HF(HIST), 클피스, 클레이튼X,
-            
+            클레이지 피플, 모스랜드, 클레이체크, 깐부테이블, Animals Punks, U
+            KOREAN, N2HF(HIST), 클피스, 클레이튼X,
           </p>
           <p style="font-size: 14px">
-            국밥코인, MEMETHERAPY, LeeAce, NaSol.DAO, 콘텐츠마이닝크루, 아카데미특수교육재단, 
+            국밥코인, MEMETHERAPY, LeeAce, NaSol.DAO, 콘텐츠마이닝크루,
+            아카데미특수교육재단,
           </p>
         </div>
       </div>
@@ -590,7 +630,7 @@
     >
       <div class="funding-btn-body-div">
         <button id="btn_mint" class="button-funding btn-open-popup" disabled>
-          참여하기 ( 준비 중 )
+          민팅 23일 오후 9시 시작됩니다.
         </button>
       </div>
     </div>

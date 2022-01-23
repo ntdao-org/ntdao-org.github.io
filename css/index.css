@@ -92,21 +92,44 @@ button[disabled] {
   font-family: "국립박물관문화재단클래식M";
 }
 
+.mint_btn_div {
+  background: #7e6754;
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
 .button-text-large {
-  font-size: 24px;
+  font-family: "국립박물관문화재단클래식M", sans-serif;
+  font-size: 22px;
   line-height: 160%;
-  width: 50%;
+  /* width: 100%;
+  height: 100%; */
   text-align: center;
   border: 0;
-  background-color: #3d281780;
-  color: var(--primary-color);
-  font-family: "국립박물관문화재단클래식M";
+  color: white;
+  border-radius: 100px;
+  padding-left: 70px;
+  padding-right: 70px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  background: var(--primary-color);
+  box-shadow: 0px 0px 20px rgba(238, 228, 220, 0.8);
 }
 
 .button-text-large:hover {
-  background: var(--primary-color);
-  color: white;
+  background: #f8f3ef;
+  color: var(--primary-color);
   cursor: pointer;
+}
+
+.button-text-large:disabled,
+.button-text-large[disabled] {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
 }
 
 .button-small {
@@ -472,7 +495,7 @@ select {
 .cards-deck-outside {
   overflow-y: auto;
   flex-wrap: wrap;
-  max-height: 300px;
+  max-height: 250px;
 }
 .deck {
   display: flex;
@@ -497,4 +520,20 @@ select {
 .checkbg {
   /* filter: hue-rotate(210deg); */
   accent-color: #4b3524;
+}
+
+.check-label {
+  display: block;
+  padding-left: 20px;
+  text-indent: -20px;
+}
+
+.check-input {
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  margin: 0;
+  vertical-align: bottom;
+  position: relative;
+  top: -1px;
 }
