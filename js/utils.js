@@ -24,7 +24,7 @@ function getLink(addr, chainId) {
     );
   } else {
     return (
-      '<a target="_blank" style="var(----primary-color);" href="' +
+      '<a target="_blank" style="color:var(----primary-color);" href="' +
       explorer +
       "/tx/" +
       addr +
@@ -51,6 +51,30 @@ function getOpenSeaLink(chainId) {
     '<a target="_blank" style="text-decoration: underline;color:coral;" href="' +
     explorer +
     '">Fortress-Arena NFT</a>'
+  );
+}
+
+function getMyOpenSeaLink(chainId, _myaddr) {
+  var explorer;
+  if (chainId == 8217) {
+    explorer =
+      "https://opensea.io/" +
+      _myaddr +
+      "/national-treasure-dao?search[sortBy]=LISTING_DATE";
+  } else if (chainId == 1001) {
+    explorer =
+      "https://testnets.opensea.io/" +
+      _myaddr +
+      "/national-treasure-dao-nft-v3?search[sortBy]=LISTING_DATE";
+  } else {
+    explorer = "";
+    console.log("unsupported chainid " + chainId);
+  }
+
+  return (
+    '<a target="_blank" style="text-decoration: underline;color:var(----primary-color);" href="' +
+    explorer +
+    '">National Treasure DAO NFT</a>'
   );
 }
 

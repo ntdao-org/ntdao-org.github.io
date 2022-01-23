@@ -136,6 +136,9 @@ async function getAccount() {
         );
       }
     }
+    console.log("myAddr=>", myAddr);
+    $(".nft-address").html(getLink(nftAddress[chainId], chainId));
+    $(".opensea-address").html(getMyOpenSeaLink(chainId, myAddr));
   } catch (err) {
     console.log("getAccount => ", err);
     $("#div-myaddress").hide();
@@ -195,9 +198,6 @@ async function getContracts() {
   } else {
     nftContract = new web3.eth.Contract(nftAbi[chainId], nftAddress[chainId]);
   }
-  // console.log("getContracts nftContract =>", nftContract);
-  $(".nft-address").html(getLink(nftAddress[chainId], chainId));
-  $(".opensea-address").html(getOpenSeaLink(chainId));
   await getMintingState();
 }
 
