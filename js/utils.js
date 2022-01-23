@@ -38,7 +38,7 @@ function getLink(addr, chainId) {
 function getOpenSeaLink(chainId) {
   var explorer;
   if (chainId == 8217) {
-    explorer = "https://opensea.io/collection/national-treasure-dao-nft";
+    explorer = "https://opensea.io/collection/national-treasure-dao";
   } else if (chainId == 1001) {
     explorer =
       "https://testnets.opensea.io/collection/national-treasure-dao-nft-v3";
