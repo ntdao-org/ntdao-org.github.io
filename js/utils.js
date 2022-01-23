@@ -55,17 +55,27 @@ function getOpenSeaLink(chainId) {
 }
 
 function getMyOpenSeaLink(chainId, _myaddr) {
+  console.log("getMyOpenSeaLink _myaddr => ", _myaddr);
   var explorer;
   if (chainId == 8217) {
-    explorer =
-      "https://opensea.io/" +
-      _myaddr +
-      "/national-treasure-dao?search[sortBy]=LISTING_DATE";
+    if (_myaddr !== undefined) {
+      explorer =
+        "https://opensea.io/" +
+        _myaddr +
+        "/national-treasure-dao?search[sortBy]=LISTING_DATE";
+    } else {
+      explorer = "https://opensea.io/collection/national-treasure-dao";
+    }
   } else if (chainId == 1001) {
-    explorer =
-      "https://testnets.opensea.io/" +
-      _myaddr +
-      "/national-treasure-dao-nft-v3?search[sortBy]=LISTING_DATE";
+    if (_myaddr !== undefined) {
+      explorer =
+        "https://testnets.opensea.io/" +
+        _myaddr +
+        "/national-treasure-dao-nft-v3?search[sortBy]=LISTING_DATE";
+    } else {
+      explorer =
+        "https://testnets.opensea.io/collection/national-treasure-dao-nft-v3";
+    }
   } else {
     explorer = "";
     console.log("unsupported chainid " + chainId);
