@@ -319,7 +319,9 @@ async function getTotalSupply() {
   $(".claimedcnt").html(mintedCnt + "/" + maxCnt);
   $(".mintinnfee").html("[ " + fee_gwei + " KLAY ]");
 
-  showCardList("minted_cards_deck", null);
+  const mycards = await getMyCards();
+  setMyCardCnt(mycards);
+  // showCardList("minted_cards_deck", null);
   // }
 }
 
@@ -461,6 +463,7 @@ async function nftMint() {
   }
 
   async function setMintResult(receipt) {
+    // console.log("setMintResult*** receipt => ", receipt);
     // terms agree check reset
     const terms_agree = document.getElementById("terms_agree");
     terms_agree.checked = false;
@@ -474,6 +477,7 @@ async function nftMint() {
         resultTokenids.push(receipt.events.Transfer.returnValues.tokenId);
       }
       getTotalSupply();
+      showCardList("minted_cards_deck", null);
     }
   }
 }
@@ -524,6 +528,7 @@ async function nftRefund() {
               // console.log("receipt => ", receipt);
 
               getTotalSupply();
+              showCardList("minted_cards_deck", null);
             })
             .on("error", (error) => {
               $("#minting-loading").hide();
@@ -549,6 +554,7 @@ async function nftRefund() {
               $("#minting-loading").hide();
               // console.log("receipt => ", receipt);
               getTotalSupply();
+              showCardList("minted_cards_deck", null);
             })
             .on("error", (error) => {
               $("#minting-loading").hide();
@@ -564,6 +570,45 @@ async function nftRefund() {
   }
 }
 
+async function getMyCards() {
+  let _TokenIdList = [];
+  if (mintingState == 2) {
+    // refund
+    _TokenIdList = await nftContract.methods.getUnclaimedRefunds(myAddr).call();
+    if (_TokenIdList.length > 0) {
+      _TokenIdList = _TokenIdList.filter((tokenID) => tokenID != "0");
+    }
+  } else {
+    // tokens of
+    _TokenIdList = await nftContract.methods.tokensOf(myAddr).call();
+  }
+  return _TokenIdList;
+}
+
+async function setMyCardCnt(_tokenIds) {
+  if (_tokenIds.length > 0) {
+    const fee_wei = await nftContract.methods.MINTING_FEE().call();
+    let my_fund_cnt = document.getElementById("my_fund_cnt");
+    let my_fund_klay = document.getElementById("my_fund_klay");
+    const my_fund_klay_wei = ethers.BigNumber.from(fee_wei).mul(
+      _tokenIds.length
+    );
+
+    let my_fund_klay_gwei = ethers.utils.formatEther(my_fund_klay_wei);
+
+    my_fund_klay_gwei = gencurrencyFormat(my_fund_klay_gwei);
+    let myTokenCnt = _tokenIds.length;
+    myTokenCnt = gencurrencyFormat(myTokenCnt);
+
+    my_fund_cnt.innerText = myTokenCnt;
+    my_fund_klay.innerHTML =
+      my_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
+  } else {
+    my_fund_cnt.innerText = 0;
+    my_fund_klay.innerHTML = 0 + '<span style="font-size: 14px"> KLAY</span>';
+  }
+}
+
 getCardInfo = async (tokenId) => {
   try {
     let tokenInfoBase64 = await nftContract.methods.tokenURI(tokenId).call();
@@ -576,6 +621,7 @@ getCardInfo = async (tokenId) => {
 };
 
 showCardList = async (kind, tokenIds) => {
+  console.log("**** showCardList");
   if (mintingState == 1) {
     // public mint
     $("#mintin_btn_div").show();
@@ -596,43 +642,15 @@ showCardList = async (kind, tokenIds) => {
   $("#minting-loading").show();
   checkInTokenIdList = [];
   let claimTokenIdList = [];
-  if (mintingState == 2) {
-    // refund
-    claimTokenIdList = await nftContract.methods
-      .getUnclaimedRefunds(myAddr)
-      .call();
-  } else {
-    // tokens of
-    claimTokenIdList = await nftContract.methods.tokensOf(myAddr).call();
-  }
 
-  if (claimTokenIdList.length > 0) {
-    claimTokenIdList = claimTokenIdList.filter((tokenID) => tokenID != "0");
-  }
+  claimTokenIdList = await getMyCards();
+
   let tokenId = claimTokenIdList;
   // let tokenId = [];
   const target = document.getElementById("btn_minting");
   target.disabled = true;
 
-  if (tokenId.length > 0) {
-    const fee_wei = await nftContract.methods.MINTING_FEE().call();
-    let my_fund_cnt = document.getElementById("my_fund_cnt");
-    let my_fund_klay = document.getElementById("my_fund_klay");
-    const my_fund_klay_wei = ethers.BigNumber.from(fee_wei).mul(tokenId.length);
-
-    let my_fund_klay_gwei = ethers.utils.formatEther(my_fund_klay_wei);
-
-    my_fund_klay_gwei = gencurrencyFormat(my_fund_klay_gwei);
-    let myTokenCnt = tokenId.length;
-    myTokenCnt = gencurrencyFormat(myTokenCnt);
-
-    my_fund_cnt.innerText = myTokenCnt;
-    my_fund_klay.innerHTML =
-      my_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
-  } else {
-    my_fund_cnt.innerText = 0;
-    my_fund_klay.innerHTML = 0 + '<span style="font-size: 14px"> KLAY</span>';
-  }
+  setMyCardCnt(tokenId);
 
   if (tokenId.length == 0) {
     $("#div-minted-cards").hide();
@@ -835,6 +853,7 @@ btnOpenPopup.addEventListener("click", () => {
 
       break;
   }
+  showCardList("minted_cards_deck", null);
   $("#funding-btn-div").hide();
 });
 
