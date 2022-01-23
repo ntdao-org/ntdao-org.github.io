@@ -246,7 +246,7 @@ async function getMintingState() {
       btn_mint.innerText = "NFT 환불";
       break;
     case "3":
-      btn_mint.disabled = true;
+      btn_mint.disabled = false;
       btn_mint.innerText = "민팅이 종료되었습니다.";
       break;
   }
@@ -290,21 +290,6 @@ async function getMultiClaimCount() {
       multiCount = 0;
       break;
   }
-
-  // console.log("getMultiClaimCount multiCount => ", multiCount);
-
-  // if (mintingState == 1) {
-  //   $(".mintingfee").html("[ " + fee_gwei + " KLAY ]");
-  //   $(".description").html(
-  //     "<p>The price of 1 NFT is " +
-  //       fee_gwei +
-  //       " KLAY, and you can claim up to " +
-  //       multiCount +
-  //       " at a time.</p>"
-  //   );
-  // }
-
-  // // console.log("multiCount -> ", multiCount);
 }
 
 async function getTotalSupply() {
@@ -621,6 +606,18 @@ getCardInfo = async (tokenId) => {
 showCardList = async (kind, tokenIds) => {
   // console.log("showCardList kind =>", kind);
   // console.log("showCardList tokenIds =>", tokenIds);
+
+  if (mintingState == 3) {
+    // finished
+    $("#mintin_btn_div").hide();
+    $("#claimedcnt").hide();
+    $("#mintinnfee").hide();
+  } else {
+    $("#mintin_btn_div").show();
+    $("#claimedcnt").show();
+    $("#mintinnfee").show();
+  }
+
   $("#minting-loading").show();
   checkInTokenIdList = [];
   let claimTokenIdList = [];
