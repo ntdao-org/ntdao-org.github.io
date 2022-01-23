@@ -23,12 +23,12 @@ let checkInTokenIdList = [];
 
 const openseaurl = {
   8217: "https://opensea.io/assets/0x1340daa8db39342bc6d66ab9e62b8f7748f666e9/",
-  1001: "https://testnets.opensea.io/assets/baobab/0x3DF50E3B38Fb64543b268253E9f6a1865fcdac0B/",
+  1001: "https://testnets.opensea.io/assets/baobab/0xDBBabb59cBB6101EFFa83cBc11E3A760eCF32dA6/",
 };
 
 const nftAddress = {
   8217: "0x1340daa8DB39342Bc6d66aB9e62b8f7748F666e9",
-  1001: "0x3DF50E3B38Fb64543b268253E9f6a1865fcdac0B",
+  1001: "0xDBBabb59cBB6101EFFa83cBc11E3A760eCF32dA6",
 };
 
 const nftAbi = {
@@ -312,7 +312,7 @@ async function getTotalSupply() {
 
   let maxCnt = 0;
   let mintedCnt = 0;
-  if(chainId == 8217) {
+  if (chainId == 8217) {
     mintedCnt = await nftContract.methods.totalSupply().call();
     maxCnt = await checkMintingState(mintedCnt);
 
@@ -334,7 +334,9 @@ async function getTotalSupply() {
     let target_fund_klay_gwei = ethers.utils.formatEther(target_fund_klay_wei);
     target_fund_klay_gwei = gencurrencyFormat(target_fund_klay_gwei);
 
-    let current_fund_klay_gwei = ethers.utils.formatEther(current_fund_klay_wei);
+    let current_fund_klay_gwei = ethers.utils.formatEther(
+      current_fund_klay_wei
+    );
     current_fund_klay_gwei = gencurrencyFormat(current_fund_klay_gwei);
 
     maxCnt = gencurrencyFormat(maxCnt);
@@ -562,9 +564,9 @@ async function nftRefund() {
             })
             .once("receipt", (receipt) => {
               $("#minting-loading").hide();
-              console.log("receipt => ", receipt);
+              // console.log("receipt => ", receipt);
 
-              showCardList("minted_cards_deck", null);
+              getTotalSupply();
             })
             .on("error", (error) => {
               $("#minting-loading").hide();
@@ -588,9 +590,8 @@ async function nftRefund() {
             })
             .once("receipt", (receipt) => {
               $("#minting-loading").hide();
-              console.log("receipt => ", receipt);
-
-              showCardList("minted_cards_deck", null);
+              // console.log("receipt => ", receipt);
+              getTotalSupply();
             })
             .on("error", (error) => {
               $("#minting-loading").hide();
@@ -621,10 +622,16 @@ showCardList = async (kind, tokenIds) => {
   // console.log("showCardList kind =>", kind);
   // console.log("showCardList tokenIds =>", tokenIds);
   $("#minting-loading").show();
-  let claimTokenIdList = [];
   checkInTokenIdList = [];
-  claimTokenIdList = await nftContract.methods.tokensOf(myAddr).call();
-
+  let claimTokenIdList = [];
+  // claimTokenIdList = await nftContract.methods.tokensOf(myAddr).call();
+  claimTokenIdList = await nftContract.methods
+    .getUnclaimedRefunds(myAddr)
+    .call();
+  if (claimTokenIdList.length > 0) {
+    claimTokenIdList = claimTokenIdList.filter((tokenID) => tokenID != "0");
+    // console.log("claimableIds =>", claimableIds);
+  }
   let tokenId = claimTokenIdList;
   // let tokenId = [];
 
@@ -807,7 +814,7 @@ function showFullStatement(kind) {
   }
 }
 
-const banner_img = ["./asset/banner2.jpg", "./asset/banner1.jpg"];
+const banner_img = ["./asset/banner4.jpg", "./asset/banner3.jpg"];
 function showBanner() {
   let loop_cnt = 0;
   setInterval(function () {

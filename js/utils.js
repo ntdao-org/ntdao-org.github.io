@@ -41,7 +41,7 @@ function getOpenSeaLink(chainId) {
     explorer = "https://opensea.io/collection/national-treasure-dao-nft";
   } else if (chainId == 1001) {
     explorer =
-      "https://testnets.opensea.io/collection/national-treasure-dao-nft-v2";
+      "https://testnets.opensea.io/collection/national-treasure-dao-nft-v3";
   } else {
     explorer = "";
     console.log("unsupported chainid " + chainId);
