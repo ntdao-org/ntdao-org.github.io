@@ -37,6 +37,7 @@ const nftAbi = {
 showBanner();
 
 window.addEventListener("load", function () {
+  getTotalSupplyNoWallet();
   loadWeb3();
   if (typeof window.web3 !== "undefined") {
     watchChainAccount();
@@ -321,6 +322,57 @@ async function getTotalSupply() {
 
   const mycards = await getMyCards();
   setMyCardCnt(mycards);
+  // showCardList("minted_cards_deck", null);
+  // }
+}
+
+
+async function getTotalSupplyNoWallet() {
+  // clearInterval(totalsupplyInterval);
+  let cweb3 = new Web3( new Web3.providers.HttpProvider("https://public-node-api.klaytnapi.com/v1/cypress"));
+  let cnftContract = new cweb3.eth.Contract(nftAbi[chainId], nftAddress[chainId]);
+  let maxCnt = 0;
+  let mintedCnt = 0;
+  // if (chainId == 8217) {
+  mintedCnt = await cnftContract.methods.totalSupply().call();
+  maxCnt = await cnftContract.methods.MAX_PUBLIC_ID().call();
+
+   //console.log("getTotalSupply   maxCnt=> ", maxCnt);
+   //console.log("getTotalSupply   mintedCnt=> ", mintedCnt);
+
+  let target_fund_cnt = document.getElementById("target_fund_cnt");
+  let current_fund_cnt = document.getElementById("current_fund_cnt");
+
+  let target_fund_klay = document.getElementById("target_fund_klay");
+  let current_fund_klay = document.getElementById("current_fund_klay");
+
+  const fee_wei = await cnftContract.methods.MINTING_FEE().call();
+
+  const fee_gwei = ethers.utils.formatEther(fee_wei);
+  const target_fund_klay_wei = ethers.BigNumber.from(fee_wei).mul(maxCnt);
+  const current_fund_klay_wei = ethers.BigNumber.from(fee_wei).mul(mintedCnt);
+
+  let target_fund_klay_gwei = ethers.utils.formatEther(target_fund_klay_wei);
+  target_fund_klay_gwei = gencurrencyFormat(target_fund_klay_gwei);
+
+  let current_fund_klay_gwei = ethers.utils.formatEther(current_fund_klay_wei);
+  current_fund_klay_gwei = gencurrencyFormat(current_fund_klay_gwei);
+
+  maxCnt = gencurrencyFormat(maxCnt);
+  mintedCnt = gencurrencyFormat(mintedCnt);
+
+  target_fund_cnt.innerText = maxCnt;
+  current_fund_cnt.innerText = mintedCnt;
+  target_fund_klay.innerHTML =
+    target_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
+  current_fund_klay.innerHTML =
+    current_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
+
+  $(".claimedcnt").html(mintedCnt + "/" + maxCnt);
+  $(".mintinnfee").html("[ " + fee_gwei + " KLAY ]");
+
+  //const mycards = await getMyCards();
+  //setMyCardCnt(mycards);
   // showCardList("minted_cards_deck", null);
   // }
 }
