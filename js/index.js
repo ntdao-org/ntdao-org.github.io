@@ -628,6 +628,9 @@ showCardList = async (kind, tokenIds) => {
   claimTokenIdList = await nftContract.methods
     .getUnclaimedRefunds(myAddr)
     .call();
+
+  // console.log("claimTokenIdList =>", claimTokenIdList);
+
   if (claimTokenIdList.length > 0) {
     claimTokenIdList = claimTokenIdList.filter((tokenID) => tokenID != "0");
     // console.log("claimableIds =>", claimableIds);
@@ -652,6 +655,20 @@ showCardList = async (kind, tokenIds) => {
     my_fund_cnt.innerText = myTokenCnt;
     my_fund_klay.innerHTML =
       my_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
+    if (mintingState == 2) {
+      // refund
+      const target = document.getElementById("btn_minting");
+      target.disabled = false;
+    }
+  } else {
+    my_fund_cnt.innerText = 0;
+    my_fund_klay.innerHTML = 0 + '<span style="font-size: 14px"> KLAY</span>';
+
+    if (mintingState == 2) {
+      // refund
+      const target = document.getElementById("btn_minting");
+      target.disabled = true;
+    }
   }
 
   if (tokenId.length == 0) {
