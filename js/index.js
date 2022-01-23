@@ -224,6 +224,10 @@ async function getMintingState() {
     case "2":
       btn_mint.disabled = false;
       btn_mint.innerText = "NFT 환불";
+      my_refundable_cnt = document.getElementById("my_refundable_cnt");
+      my_refundable_cnt.innerText = "환불 가능한 내 NFT 개수";
+      $("#my_fund_klay").hide();
+
       break;
     case "3":
       btn_mint.disabled = false;
@@ -592,9 +596,15 @@ showCardList = async (kind, tokenIds) => {
   $("#minting-loading").show();
   checkInTokenIdList = [];
   let claimTokenIdList = [];
-  claimTokenIdList = await nftContract.methods
-    .getUnclaimedRefunds(myAddr)
-    .call();
+  if (mintingState == 2) {
+    // refund
+    claimTokenIdList = await nftContract.methods
+      .getUnclaimedRefunds(myAddr)
+      .call();
+  } else {
+    // tokens of
+    claimTokenIdList = await nftContract.methods.tokensOf(myAddr).call();
+  }
 
   if (claimTokenIdList.length > 0) {
     claimTokenIdList = claimTokenIdList.filter((tokenID) => tokenID != "0");
