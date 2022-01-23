@@ -47,12 +47,12 @@ window.addEventListener("load", function () {
 });
 
 function loadWeb3() {
-  if (typeof window.ethereum !== "undefined") {
-    window.web3 = new Web3(window.ethereum);
-    isKaikas = false;
-  } else {
+  if (typeof window.caver !== "undefined") {
     window.web3 = new Web3(window.caver);
     isKaikas = true;
+  } else {
+    window.web3 = new Web3(window.ethereum);
+    isKaikas = false;
     // window.web3 = new Web3(
     //   "https://mainnet.infura.io/v3/302b2ccfd49a40d480567a132cb7eb1d"
     // );
