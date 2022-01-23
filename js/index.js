@@ -216,7 +216,7 @@ async function getMintingState() {
   switch (mintingState.toString()) {
     case "0":
       btn_mint.disabled = true;
-      btn_mint.innerText = "민팅 준비중입니다. ";
+      btn_mint.innerText = "민팅 23일 오후 9시 시작됩니다.";
       break;
     case "1":
       btn_mint.disabled = false;
