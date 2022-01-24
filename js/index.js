@@ -61,13 +61,19 @@ function loadWeb3() {
 }
 
 function watchChainAccount() {
-  web3.currentProvider.on("accountsChanged", (accounts) => {
-    startApp();
-  });
-  web3.currentProvider.on("chainChanged", (chainId) => {
-    window.location.reload();
-    // startApp();
-  });
+  try {
+    web3.currentProvider.on("accountsChanged", (accounts) => {
+      startApp();
+    });
+    web3.currentProvider.on("chainChanged", (chainId) => {
+      window.location.reload();
+      // startApp();
+    });
+  } catch (error) {
+    console.log("watchChainAccount error => ", error);
+    document.getElementById("btn_mint").innerText =
+      "블록체인 지갑이 설치되어있지 않습니다. ";
+  }
 }
 
 async function startApp() {
@@ -109,9 +115,8 @@ async function getAccount() {
         $("#connect-btn").show();
         $("#my-addr-btn").hide();
 
-        $(".description").html(
-          "<p>모금에 참여하려면 지갑 연결 버튼을 클릭하여 지갑을 연결하세요..</p>"
-        );
+        document.getElementById("btn_mint").innerText = "지갑을 연결해주세요.";
+        document.getElementById("btn_mint").disabled = true;
       }
     } else {
       var accounts = await web3.eth.getAccounts();
@@ -132,9 +137,8 @@ async function getAccount() {
         $("#connect-btn").show();
         $("#my-addr-btn").hide();
 
-        $(".description").html(
-          "<p>모금에 참여하려면 지갑 연결 버튼을 클릭하여 지갑을 연결하세요..</p>"
-        );
+        document.getElementById("btn_mint").innerText = "지갑을 연결해주세요.";
+        document.getElementById("btn_mint").disabled = true;
       }
     }
     console.log("myAddr=>", myAddr);
@@ -328,8 +332,15 @@ async function getTotalSupply() {
 
 async function getTotalSupplyNoWallet() {
   // clearInterval(totalsupplyInterval);
-  let cweb3 = new Web3( new Web3.providers.HttpProvider("https://public-node-api.klaytnapi.com/v1/cypress"));
-  let cnftContract = new cweb3.eth.Contract(nftAbi[chainId], nftAddress[chainId]);
+  let cweb3 = new Web3(
+    new Web3.providers.HttpProvider(
+      "https://public-node-api.klaytnapi.com/v1/cypress"
+    )
+  );
+  let cnftContract = new cweb3.eth.Contract(
+    nftAbi[chainId],
+    nftAddress[chainId]
+  );
 
   let maxCnt = 0;
   let mintedCnt = 0;
@@ -337,8 +348,8 @@ async function getTotalSupplyNoWallet() {
   mintedCnt = await cnftContract.methods.totalSupply().call();
   maxCnt = await cnftContract.methods.MAX_PUBLIC_ID().call();
 
-   //console.log("getTotalSupply   maxCnt=> ", maxCnt);
-   //console.log("getTotalSupply   mintedCnt=> ", mintedCnt);
+  //console.log("getTotalSupply   maxCnt=> ", maxCnt);
+  //console.log("getTotalSupply   mintedCnt=> ", mintedCnt);
 
   let target_fund_cnt = document.getElementById("target_fund_cnt");
   let current_fund_cnt = document.getElementById("current_fund_cnt");
