@@ -19,6 +19,8 @@ let isKaikas = false;
 
 let checkInTokenIdList = [];
 
+let isWalletConnected = false;
+
 const openseaurl = {
   8217: "https://opensea.io/assets/0x122DbB0C76d1d96a9187a50C898A789b0Ed1cf7C/",
   1001: "https://testnets.opensea.io/assets/baobab/0xDBBabb59cBB6101EFFa83cBc11E3A760eCF32dA6/",
@@ -70,9 +72,10 @@ function watchChainAccount() {
       // startApp();
     });
   } catch (error) {
+    isWalletConnected = false;
     console.log("watchChainAccount error => ", error);
     document.getElementById("btn_mint").innerText =
-      "블록체인 지갑이 설치되어있지 않습니다. ";
+      "블록체인 지갑이 설치되어 있지 않습니다.";
   }
 }
 
@@ -85,7 +88,7 @@ async function startApp() {
     if (chainId == 8217 || chainId == 1001) {
       await getAccount();
     } else {
-      $(".my-address").html("지갑이 Klaytn 네트웍에 연결되어있지 않습니다.");
+      $(".my-address").html("지갑이 Klaytn 네트웍에 연결되어 있지 않습니다.");
     }
   } catch (err) {
     console.log("startApp => ", err);
@@ -101,6 +104,7 @@ async function getAccount() {
       let account = window.klaytn.selectedAddress;
       if (account != null) {
         myAddr = account;
+        isWalletConnected = true;
 
         $("#div-myaddress").show();
         $(".my-address").html(getLink(myAddr, chainId));
@@ -109,6 +113,7 @@ async function getAccount() {
         $("#my-addr-btn").show();
         await getTotalSupply();
       } else {
+        isWalletConnected = false;
         console.log("No Klaytn account is available!");
         $("#div-myaddress").hide();
         $("#content_body").hide();
@@ -116,13 +121,13 @@ async function getAccount() {
         $("#my-addr-btn").hide();
 
         document.getElementById("btn_mint").innerText = "지갑을 연결해주세요.";
-        document.getElementById("btn_mint").disabled = true;
       }
     } else {
       var accounts = await web3.eth.getAccounts();
       if (accounts.length > 0) {
         // myAddr = web3.utils.toChecksumAddress(accounts[0]);
         myAddr = accounts[0];
+        isWalletConnected = true;
 
         $("#div-myaddress").show();
         $(".my-address").html(getLink(myAddr, chainId));
@@ -131,6 +136,7 @@ async function getAccount() {
         $("#my-addr-btn").show();
         await getTotalSupply();
       } else {
+        isWalletConnected = false;
         console.log("No Klaytn account is available!");
         $("#div-myaddress").hide();
         $("#content_body").hide();
@@ -138,7 +144,6 @@ async function getAccount() {
         $("#my-addr-btn").hide();
 
         document.getElementById("btn_mint").innerText = "지갑을 연결해주세요.";
-        document.getElementById("btn_mint").disabled = true;
       }
     }
     console.log("myAddr=>", myAddr);
@@ -892,8 +897,13 @@ const btnClosePopupMint = document.querySelector(".btn-close-popup-mint");
 const btn_minting = document.getElementById("btn_minting");
 
 btnOpenPopup.addEventListener("click", () => {
+  if (!isWalletConnected) {
+    window.open("./guide/mintingguide.html");
+    return;
+  }
   const status = modal_mint.classList.toggle("show");
   const target = document.getElementById("btn_minting");
+  console.log("..... isWalletConnected =>", isWalletConnected);
   switch (mintingState.toString()) {
     case "1":
       btn_minting.innerText = "NFT 민팅";
