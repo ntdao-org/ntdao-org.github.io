@@ -80,15 +80,15 @@ function watchChainAccount() {
 }
 
 async function startApp() {
-  console.log("startApp");
   try {
     var currentChainId = await web3.eth.getChainId();
     chainId = currentChainId;
-
     if (chainId == 8217 || chainId == 1001) {
       await getAccount();
     } else {
       $(".my-address").html("지갑이 Klaytn 네트웍에 연결되어 있지 않습니다.");
+      document.getElementById("btn_mint").innerText =
+        "Klaytn 네트웍에 연결되어 있지 않습니다.";
     }
   } catch (err) {
     console.log("startApp => ", err);
@@ -903,7 +903,6 @@ btnOpenPopup.addEventListener("click", () => {
   }
   const status = modal_mint.classList.toggle("show");
   const target = document.getElementById("btn_minting");
-  console.log("..... isWalletConnected =>", isWalletConnected);
   switch (mintingState.toString()) {
     case "1":
       btn_minting.innerText = "NFT 민팅";
