@@ -985,7 +985,7 @@ function makeEventPopup() {
           loop_cnt = loop_cnt + 1;
           // console.log("loop_cnt =>", loop_cnt);
           loop_cnt > events.length - 1 ? (loop_cnt = 0) : loop_cnt;
-        }, 4000);
+        }, 5000);
       }
 
       $("#event_popup").show();
