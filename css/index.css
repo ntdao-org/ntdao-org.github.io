@@ -567,6 +567,18 @@ select {
   display: none; /* Chrome, Safari, Opera*/
 }
 
+@keyframes slidein {
+  from {
+    margin-left: 100%;
+    width: 300%;
+  }
+
+  to {
+    margin-left: 0%;
+    width: 100%;
+  }
+}
+
 .modal-footer {
   position: absolute;
   display: flex;
@@ -596,7 +608,7 @@ select {
   font-family: Noto Sans KR;
   font-style: normal;
   font-weight: 500;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 160%;
   text-align: left;
 }
@@ -607,3 +619,9 @@ select {
   top: 290px;
   left: 6%;
 }
+
+/* .event_img_div {
+  animation-duration: 4s;
+  animation-name: slidein;
+  animation-iteration-count: infinite;
+} */

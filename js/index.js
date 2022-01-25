@@ -966,6 +966,7 @@ termsAgreeCheck = (e) => {
 };
 
 function makeEventPopup() {
+  // clearInterval(totalsupplyInterval);
   let eventPopupCookieCheck = getCookie("popEventToday");
   if (eventPopupCookieCheck == "popupClose") {
     // For test
@@ -984,7 +985,7 @@ function makeEventPopup() {
           loop_cnt = loop_cnt + 1;
           console.log("loop_cnt =>", loop_cnt);
           loop_cnt > events.length - 1 ? (loop_cnt = 0) : loop_cnt;
-        }, 5000);
+        }, 4000);
       }
 
       $("#event_popup").show();
@@ -999,6 +1000,7 @@ function setEventContent(eventContents, contentidx) {
 
   // document.getElementById("event_company").innerText = events[i].company;
   $("#event_company").hide();
+  // Logo image
   if (eventContents[contentidx].logo.length > 0) {
     document.getElementById("event_company_logo").innerHTML =
       '<img height="50" style=" margin-top:10px;" src="./event/asset/' +
@@ -1007,6 +1009,7 @@ function setEventContent(eventContents, contentidx) {
   } else {
     document.getElementById("event_company_logo").innerHTML = "";
   }
+  // event title
   if (eventContents[contentidx].title.length > 0) {
     document.getElementById("event_title").innerHTML =
       '<p class="event-p" style="text-align:center; margin-top:10px; "><strong>' +
@@ -1016,6 +1019,7 @@ function setEventContent(eventContents, contentidx) {
     document.getElementById("event_title").innerHTML = "";
   }
 
+  // event simple content
   if (eventContents[contentidx].simplecontent.length > 0) {
     document.getElementById("event_content").innerHTML =
       '<p class="event-p" >' + eventContents[contentidx].simplecontent + "</p>";
@@ -1023,15 +1027,21 @@ function setEventContent(eventContents, contentidx) {
     document.getElementById("event_content").innerHTML = "";
   }
 
+  // event content image
   if (eventContents[contentidx].contentimg.length > 0) {
+    document.getElementById("event_img").style.width = "320px";
     document.getElementById("event_img").innerHTML =
-      '<img width="320px" height="350px" src="./event/asset/' +
+      '<img width="320px" src="./event/asset/' +
       eventContents[contentidx].contentimg +
       '"></img>';
   } else {
+    document.getElementById("event_img").style.width = "0";
+    document.getElementById("event_img").style.height = "0";
+
     document.getElementById("event_img").innerHTML = "";
   }
 
+  // event detail link url
   if (eventContents[contentidx].linkurl.length > 0) {
     // <button class="button-text-large" style="font-size: 16px">이벤트 자세히보</button>
 
