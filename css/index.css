@@ -588,6 +588,16 @@ select {
   top: 350px;
   background-color: var(--primary-color);
 }
+.modal-header {
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  width: 320px;
+  height: 35px;
+  top: 0px;
+  background-color: transparent;
+}
+
 .modal-button {
   line-height: 160%;
   text-align: center;
@@ -620,6 +630,17 @@ select {
   left: 6%;
 }
 
+.event_count_p {
+  background-color: #3d281780;
+  color: white;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  margin: 0;
+  text-align: center;
+  font-size: 14px;
+}
 /* .event_img_div {
   animation-duration: 4s;
   animation-name: slidein;

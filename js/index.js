@@ -983,7 +983,7 @@ function makeEventPopup() {
           setEventContent(events, loop_cnt);
 
           loop_cnt = loop_cnt + 1;
-          console.log("loop_cnt =>", loop_cnt);
+          // console.log("loop_cnt =>", loop_cnt);
           loop_cnt > events.length - 1 ? (loop_cnt = 0) : loop_cnt;
         }, 4000);
       }
@@ -996,9 +996,12 @@ function makeEventPopup() {
 }
 
 function setEventContent(eventContents, contentidx) {
-  console.log("contentidx =>", contentidx);
+  // console.log("contentidx =>", contentidx);
 
+  document.getElementById("event_count").innerText =
+    contentidx + 1 + " / " + eventContents.length;
   // document.getElementById("event_company").innerText = events[i].company;
+
   $("#event_company").hide();
   // Logo image
   if (eventContents[contentidx].logo.length > 0) {
