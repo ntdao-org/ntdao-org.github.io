@@ -1,0 +1,87 @@
+@charset "utf-8";
+
+@font-face {
+  font-family: "NotoSerifKR";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NotoSerifKR.woff")
+    format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+html,
+body {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.4;
+  margin: 0 auto;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  font-family: "NotoSerifKR", sans-serif;
+}
+
+.main-div {
+  justify-content: center;
+  display: flex;
+}
+
+.content-div {
+  max-width: 800px;
+  width: 100%;
+}
+
+.top-content-out {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.top-content-div {
+  text-align: center;
+}
+
+.content-p {
+  width: 250px;
+  height: 55px;
+  font-size: 16px;
+}
+
+.content-list {
+  display: flex;
+  width: 100%;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.content-list .company-p {
+  margin-top: 0;
+  margin-bottom: 0;
+  width: 200px;
+}
+.content-list .content-detail-p {
+  width: 400px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.content-list img {
+  width: 100px;
+  margin-right: 20px;
+}
+
+.line-dash {
+  border: 1px solid #3d2817;
+  border-style: dashed;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  width: 100%;
+}
+
+.top-content-out p {
+  text-align: center;
+}
+.content-img {
+  width: 250px;
+  height: 274px;
+  border: 1px solid #999999;
+}
