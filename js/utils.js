@@ -144,3 +144,35 @@ function convDatetoTime(date) {
   let convDate = new Date(date);
   return convDate;
 }
+
+// use event modal popup
+function setCookie(name, value, expiredays) {
+  var today = new Date();
+  console.log(today.getDate());
+  today.setDate(today.getDate() + expiredays);
+
+  document.cookie =
+    name + "=" + value + "; path=/; expires=" + today.toGMTString();
+}
+
+function getCookie(name) {
+  var cookie = document.cookie;
+
+  if (document.cookie != "") {
+    var cookie_array = cookie.split("; ");
+    console.log(cookie_array);
+    for (var index in cookie_array) {
+      var cookie_name = cookie_array[index].split("=");
+      if (cookie_name[0] == "popEventToday") {
+        return cookie_name[1];
+      }
+    }
+  }
+  return;
+}
+
+function delCookie(_name) {
+  let date = new Date();
+  date.setDate(date.getDate() - 100);
+  document.cookie = _name + "= ; expires=" + date.toGMTString();
+}

@@ -163,15 +163,50 @@
           background-repeat: no-repeat;
         "
       >
-        <div id="div-countdown" style="display: none">
-          <h2 style="margin-bottom: 0px">
-            <!-- Time remaining until the Presale Whitelist Round 1 starts -->
-          </h2>
-          <h2
-            id="countdown"
-            style="margin-top: 0px; color: var(--second-color)"
-          ></h2>
+        <!-- Event popup start -->
+        <div class="event-modal-popup" id="event_popup" style="display: none">
+          <div class="event-modal_body">
+            <div class="event-modal_content">
+              <p
+                class="content-p"
+                id="event_company"
+                style="text-align: center"
+              ></p>
+              <div id="event_company_logo"></div>
+              <div id="event_title"></div>
+              <div
+                id="event_content"
+                style="padding-left: 20px; padding-right: 20px"
+              ></div>
+
+              <div id="event_img" style="width: 320px; height: 350px"></div>
+            </div>
+            <div id="event_link" style="padding-bottom: 10px"></div>
+          </div>
+          <div class="modal-footer">
+            <div>
+              <button
+                class="modal-button modal-today-close"
+                style="text-decoration: underline"
+                onclick='closeEventPopup("today")'
+                ;
+              >
+                하루 동안 보지 않기
+              </button>
+            </div>
+            <div>
+              <button
+                class="modal-button"
+                style="font-size: 14px"
+                onclick='closeEventPopup("thistime")'
+                ;
+              >
+                닫기
+              </button>
+            </div>
+          </div>
         </div>
+        <!-- Event popup end -->
       </div>
 
       <div class="content-div">
@@ -605,6 +640,7 @@
         </div>
       </div>
       <!-- Funding popup End -->
+
       <div
         style="
           background-color: white;
@@ -676,6 +712,7 @@
     <!-- Script -->
     <script src="./js/1.2.11-web3-min.js"></script>
     <script src="./js/5.2-umd-min.js" type="application/javascript"></script>
+    <script src="./event/event_contents.js" type=" text/javascript"></script>
     <script
       src="./contractabi/ntdabi_klaytn_mainnet.js"
       type=" text/javascript"

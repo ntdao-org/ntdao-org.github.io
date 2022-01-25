@@ -37,6 +37,7 @@ const nftAbi = {
 };
 
 showBanner();
+makeEventPopup();
 
 window.addEventListener("load", function () {
   getTotalSupplyNoWallet();
@@ -963,3 +964,89 @@ termsAgreeCheck = (e) => {
     target.disabled = true;
   }
 };
+
+function makeEventPopup() {
+  let eventPopupCookieCheck = getCookie("popEventToday");
+  if (eventPopupCookieCheck == "popupClose") {
+    // For test
+    delCookie("popEventToday");
+    $("#event_popup").hide();
+  } else {
+    let events = event_contents;
+
+    if (events.length > 0) {
+      setEventContent(events, 0);
+      let loop_cnt = 1;
+      if (events.length > 1) {
+        setInterval(function () {
+          setEventContent(events, loop_cnt);
+
+          loop_cnt = loop_cnt + 1;
+          console.log("loop_cnt =>", loop_cnt);
+          loop_cnt > events.length - 1 ? (loop_cnt = 0) : loop_cnt;
+        }, 5000);
+      }
+
+      $("#event_popup").show();
+    } else {
+      $("#event_popup").hide();
+    }
+  }
+}
+
+function setEventContent(eventContents, contentidx) {
+  console.log("contentidx =>", contentidx);
+
+  // document.getElementById("event_company").innerText = events[i].company;
+  $("#event_company").hide();
+  if (eventContents[contentidx].logo.length > 0) {
+    document.getElementById("event_company_logo").innerHTML =
+      '<img height="50" style=" margin-top:10px;" src="./event/asset/' +
+      eventContents[contentidx].logo +
+      '"></img>';
+  } else {
+    document.getElementById("event_company_logo").innerHTML = "";
+  }
+  if (eventContents[contentidx].title.length > 0) {
+    document.getElementById("event_title").innerHTML =
+      '<p class="event-p" style="text-align:center; margin-top:10px; "><strong>' +
+      eventContents[contentidx].title +
+      "</strong></p>";
+  } else {
+    document.getElementById("event_title").innerHTML = "";
+  }
+
+  if (eventContents[contentidx].simplecontent.length > 0) {
+    document.getElementById("event_content").innerHTML =
+      '<p class="event-p" >' + eventContents[contentidx].simplecontent + "</p>";
+  } else {
+    document.getElementById("event_content").innerHTML = "";
+  }
+
+  if (eventContents[contentidx].contentimg.length > 0) {
+    document.getElementById("event_img").innerHTML =
+      '<img width="320px" height="350px" src="./event/asset/' +
+      eventContents[contentidx].contentimg +
+      '"></img>';
+  } else {
+    document.getElementById("event_img").innerHTML = "";
+  }
+
+  if (eventContents[contentidx].linkurl.length > 0) {
+    // <button class="button-text-large" style="font-size: 16px">이벤트 자세히보</button>
+
+    document.getElementById("event_link").innerHTML =
+      '<a target="_blank" class="event_detail_link button-text-large" style="font-size: 16px; text-decoration:none;" href="' +
+      eventContents[contentidx].linkurl +
+      '" >이벤트 페이지로 이동</a>';
+  } else {
+    document.getElementById("event_link").innerHTML = "";
+  }
+}
+
+function closeEventPopup(_closekind) {
+  if (_closekind === "today") {
+    setCookie("popEventToday", "popupClose", 1);
+  }
+  $("#event_popup").hide();
+}
