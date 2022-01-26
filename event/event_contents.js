@@ -39,16 +39,16 @@ let event_contents = [
     desc: "국보Dao NFT 1개 당 100 LEEDO 에어드랍 이벤트",
   },
 
-  {
-    company: "Fortress Arena",
-    logo: "fortressArena_logo.jpg",
-    title: "Founder's Tank NFT 에어드롭 이벤트",
-    desc: "Founder's Tank NFT 에어드롭 이벤트",
-    simplecontent: "",
-    contentimg: "fortressarena_event.png",
-    linkurl:
-      "https://medium.com/@Fortress_Arena/%ED%8F%AC%ED%8A%B8%EB%A6%AC%EC%8A%A4-%EC%95%84%EB%A0%88%EB%82%98%EC%99%80-%EA%B5%AD%EB%B3%B4dao-%ED%8C%8C%ED%8A%B8%EB%84%88%EC%8B%AD-d22acd94e019",
-  },
+  // {
+  //   company: "Fortress Arena",
+  //   logo: "fortressArena_logo.jpg",
+  //   title: "Founder's Tank NFT 에어드롭 이벤트",
+  //   desc: "Founder's Tank NFT 에어드롭 이벤트",
+  //   simplecontent: "",
+  //   contentimg: "fortressarena_event.png",
+  //   linkurl:
+  //     "https://medium.com/@Fortress_Arena/%ED%8F%AC%ED%8A%B8%EB%A6%AC%EC%8A%A4-%EC%95%84%EB%A0%88%EB%82%98%EC%99%80-%EA%B5%AD%EB%B3%B4dao-%ED%8C%8C%ED%8A%B8%EB%84%88%EC%8B%AD-d22acd94e019",
+  // },
   {
     company: "NFT MAGAZINE ND",
     logo: "nd_logo.jpg",
