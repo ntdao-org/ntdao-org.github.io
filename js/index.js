@@ -10,6 +10,7 @@ const networkList = {
 };
 let myAddr;
 let mintingFee;
+let myNftCount = 0;
 let totalsupplyInterval;
 
 let openMyCardsView = false;
@@ -227,10 +228,12 @@ async function getMintingState() {
     case "0":
       btn_mint.disabled = true;
       btn_mint.innerText = "민팅 23일 오후 9시 시작됩니다.";
+      $("#refund_thanks").hide();
       break;
     case "1":
       btn_mint.disabled = false;
       btn_mint.innerText = "민팅 참여하기";
+      $("#refund_thanks").hide();
       break;
     case "2":
       btn_mint.disabled = false;
@@ -238,11 +241,16 @@ async function getMintingState() {
       my_refundable_cnt = document.getElementById("my_refundable_cnt");
       my_refundable_cnt.innerText = "환불 가능한 내 NFT 개수";
       $("#my_fund_klay").hide();
+      $("#refund_thanks").show();
 
       break;
     case "3":
       btn_mint.disabled = false;
       btn_mint.innerText = "민팅 종료!! 내 NFT 보기";
+      let finish_str = "";
+      finish_str = finish_str + "국보Dao NFT 민팅에 참여해주셔서 감사합니다.";
+      document.getElementById("refund_thanks").innerText = finish_str;
+      $("#refund_thanks").show();
       break;
   }
 
@@ -552,7 +560,7 @@ async function nftMint() {
 }
 
 async function nftRefund() {
-  console.log("nftRefund checkInTokenIdList => ", checkInTokenIdList);
+  // console.log("nftRefund checkInTokenIdList => ", checkInTokenIdList);
   try {
     $("#minting-loading").show();
 
@@ -667,12 +675,14 @@ async function setMyCardCnt(_tokenIds) {
 
     my_fund_klay_gwei = gencurrencyFormat(my_fund_klay_gwei);
     let myTokenCnt = _tokenIds.length;
+    myNftCount = myTokenCnt; // global variable
     myTokenCnt = gencurrencyFormat(myTokenCnt);
 
     my_fund_cnt.innerText = myTokenCnt;
     my_fund_klay.innerHTML =
       my_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
   } else {
+    myNftCount = 0;
     my_fund_cnt.innerText = 0;
     my_fund_klay.innerHTML = 0 + '<span style="font-size: 14px"> KLAY</span>';
   }
@@ -696,6 +706,7 @@ showCardList = async (kind, tokenIds) => {
     $("#mintin_btn_div").show();
     $("#claimedcnt").show();
     $("#mintinnfee").show();
+    $("#refund_desc").hide();
   } else if (mintingState == 2) {
     // refund
     $("#mintin_btn_div").show();
@@ -706,6 +717,7 @@ showCardList = async (kind, tokenIds) => {
     $("#mintin_btn_div").hide();
     $("#claimedcnt").hide();
     $("#mintinnfee").hide();
+    $("#refund_desc").hide();
   }
 
   $("#minting-loading").show();
@@ -721,6 +733,14 @@ showCardList = async (kind, tokenIds) => {
 
   setMyCardCnt(tokenId);
 
+  // make Refund Description
+  if (mintingState == 2) {
+    makeRefundDesc();
+    $("#refund_desc").show();
+  } else {
+    $("#refund_desc").hide();
+  }
+
   if (tokenId.length == 0) {
     $("#div-minted-cards").hide();
     $("#minting-loading").hide();
@@ -728,6 +748,7 @@ showCardList = async (kind, tokenIds) => {
   } else {
     $("#div-minted-cards").show();
   }
+
   let arr = [];
 
   const cardInfoList = await Promise.all(
@@ -909,7 +930,6 @@ btnOpenPopup.addEventListener("click", () => {
       btn_minting.innerText = "NFT 민팅";
       $("#claimedcnt").show();
       $("#mintinnfee").show();
-      $("#refund_desc").hide();
       const terms_agree = document.getElementById("terms_agree");
       if (terms_agree.checked) {
         target.disabled = false;
@@ -922,8 +942,6 @@ btnOpenPopup.addEventListener("click", () => {
       target.disabled = true;
       $("#claimedcnt").hide();
       $("#mintinnfee").hide();
-      $("#refund_desc").show();
-
       break;
   }
   showCardList("minted_cards_deck", null);
@@ -945,6 +963,29 @@ modal_mint.addEventListener("click", (event) => {
   }
 });
 
+function makeRefundDesc() {
+  let refund_desc = document.getElementById("refund_desc");
+  let refund_desc_str = "";
+  // console.log("myNftCount =>", myNftCount);
+  if (myNftCount == 0) {
+    refund_desc_str = refund_desc_str + "환불 할 NFT가 없습니다.<br/><br/>";
+  } else {
+    refund_desc_str =
+      refund_desc_str +
+      "환불 할 NFT 를 선택 후 NFT 환불 버튼을 눌러주세요.<br/><br/>";
+  }
+  refund_desc_str =
+    refund_desc_str + "국보Dao NFT는 환불 되어도 소유권은 그대로 유지되며";
+
+  refund_desc_str =
+    refund_desc_str +
+    '<span><a target="_blank" style="text-decoration: underline;color: var(----primary-color); font-size:18px;" href="';
+  refund_desc_str =
+    refund_desc_str +
+    getMyOpenSeaUrl(chainId, myAddr) +
+    '"><strong> Opensea 에서 확인</strong></a> </span>할 수 있습니다.';
+  refund_desc.innerHTML = refund_desc_str;
+}
 function gencurrencyFormat(_val) {
   let org_val = _val;
 

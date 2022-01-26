@@ -55,7 +55,7 @@ function getOpenSeaLink(chainId) {
 }
 
 function getMyOpenSeaLink(chainId, _myaddr) {
-  console.log("getMyOpenSeaLink _myaddr => ", _myaddr);
+  // console.log("getMyOpenSeaLink _myaddr => ", _myaddr);
   var explorer;
   if (chainId == 8217) {
     if (_myaddr !== undefined) {
@@ -86,6 +86,36 @@ function getMyOpenSeaLink(chainId, _myaddr) {
     explorer +
     '">National Treasure DAO NFT</a>'
   );
+}
+
+function getMyOpenSeaUrl(chainId, _myaddr) {
+  // console.log("getMyOpenSeaLink _myaddr => ", _myaddr);
+  var explorer;
+  if (chainId == 8217) {
+    if (_myaddr !== undefined) {
+      explorer =
+        "https://opensea.io/" +
+        _myaddr +
+        "/national-treasure-dao?search[sortBy]=LISTING_DATE";
+    } else {
+      explorer = "https://opensea.io/collection/national-treasure-dao";
+    }
+  } else if (chainId == 1001) {
+    if (_myaddr !== undefined) {
+      explorer =
+        "https://testnets.opensea.io/" +
+        _myaddr +
+        "/national-treasure-dao-nft-v3?search[sortBy]=LISTING_DATE";
+    } else {
+      explorer =
+        "https://testnets.opensea.io/collection/national-treasure-dao-nft-v3";
+    }
+  } else {
+    explorer = "";
+    console.log("unsupported chainid " + chainId);
+  }
+
+  return explorer;
 }
 
 function goMintGuide() {
