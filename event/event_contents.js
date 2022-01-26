@@ -24,7 +24,7 @@ let event_contents = [
     logo: "",
     title: "",
     simplecontent: "",
-    contentimg: "leedo_event2.png",
+    contentimg: "Leedo-envet-popup.jpg",
     linkurl:
       "https://medium.com/leedo-project/%EA%B5%AD%EB%B3%B4-dao-%EC%B0%B8%EC%97%AC%EC%9E%90-%EB%8C%80%EC%83%81-%EC%97%90%EC%96%B4%EB%93%9C%EB%A1%AD-%EC%9D%B4%EB%B2%A4%ED%8A%B8-5ac7e3503eec",
     desc: "국보Dao NFT 1개 당 100 LEEDO 에어드랍 이벤트",
