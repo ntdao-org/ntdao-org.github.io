@@ -1,5 +1,14 @@
 let event_contents = [
   {
+    company: "토큰포스트",
+    logo: "",
+    title: "",
+    desc: "블록체인 매거진 <BBR> 1년 구독권을 10명에게 증정합니다.",
+    simplecontent: "",
+    contentimg: "tokenpost_event.png",
+    linkurl: "https://www.tokenpost.kr/event/548",
+  },
+  {
     company: "디센트",
     logo: "",
     title: "",
@@ -29,6 +38,7 @@ let event_contents = [
       "https://medium.com/leedo-project/%EA%B5%AD%EB%B3%B4-dao-%EC%B0%B8%EC%97%AC%EC%9E%90-%EB%8C%80%EC%83%81-%EC%97%90%EC%96%B4%EB%93%9C%EB%A1%AD-%EC%9D%B4%EB%B2%A4%ED%8A%B8-5ac7e3503eec",
     desc: "국보Dao NFT 1개 당 100 LEEDO 에어드랍 이벤트",
   },
+
   {
     company: "Fortress Arena",
     logo: "fortressArena_logo.jpg",
