@@ -76,21 +76,24 @@ function watchChainAccount() {
   } catch (error) {
     isWalletConnected = false;
     console.log("watchChainAccount error => ", error);
-    document.getElementById("btn_mint").innerText =
-      "블록체인 지갑이 설치되어 있지 않습니다.";
+    document.getElementById("btn_mint").innerText = "블록체인 지갑이 설치되어 있지 않습니다.";
   }
 }
 
 async function startApp() {
   try {
-    var currentChainId = await web3.eth.getChainId();
+    var currentChainId;
+    if (isKaikas) {
+      currentChainId = web3.currentProvider.networkVersion;
+    } else {
+      currentChainId = await web3.eth.getChainId();
+    }
     chainId = currentChainId;
     if (chainId == 8217 || chainId == 1001) {
       await getAccount();
     } else {
       $(".my-address").html("지갑이 Klaytn 네트웍에 연결되어 있지 않습니다.");
-      document.getElementById("btn_mint").innerText =
-        "Klaytn 네트웍에 연결되어 있지 않습니다.";
+      document.getElementById("btn_mint").innerText = "Klaytn 네트웍에 연결되어 있지 않습니다.";
     }
   } catch (err) {
     console.log("startApp => ", err);
@@ -103,9 +106,12 @@ async function getAccount() {
 
     // console.log("getAccount accounts  => ", accounts);
     if (isKaikas) {
-      let account = window.klaytn.selectedAddress;
-      if (account != null) {
-        myAddr = account;
+      // let account = web3.currentProvider.selectedAddress;
+      const accounts = await klaytn.enable();
+
+      console.log("account =>", accounts);
+      if (accounts != null) {
+        myAddr = accounts[0];
         isWalletConnected = true;
 
         $("#div-myaddress").show();
@@ -157,9 +163,7 @@ async function getAccount() {
     $("#content_body").hide();
     $("#connect-btn").show();
     $("#my-addr-btn").hide();
-    $(".description").html(
-      "<p>모금에 참여하려면 지갑 연결 버튼을 클릭하여 지갑을 연결하세요..</p>"
-    );
+    $(".description").html("<p>모금에 참여하려면 지갑 연결 버튼을 클릭하여 지갑을 연결하세요..</p>");
     $(".my-address").html("지갑에서 Klaytn 네트웍을 선택하세요");
   }
 }
@@ -270,16 +274,9 @@ async function getMultiClaimCount() {
       multiCount = await nftContract.methods.MAX_PUBLIC_MULTI().call();
       for (let i = 1; i < parseInt(multiCount) + 1; i++) {
         if (i === 1) {
-          optionItem =
-            optionItem +
-            '<option value="' +
-            i +
-            '" selected="selected">' +
-            i +
-            "</option>";
+          optionItem = optionItem + '<option value="' + i + '" selected="selected">' + i + "</option>";
         } else {
-          optionItem =
-            optionItem + '<option value="' + i + '" >' + i + "</option>";
+          optionItem = optionItem + '<option value="' + i + '" >' + i + "</option>";
         }
       }
       claimcount.innerHTML = optionItem;
@@ -330,10 +327,8 @@ async function getTotalSupply() {
 
   target_fund_cnt.innerText = maxCnt;
   current_fund_cnt.innerText = mintedCnt;
-  target_fund_klay.innerHTML =
-    target_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
-  current_fund_klay.innerHTML =
-    current_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
+  target_fund_klay.innerHTML = target_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
+  current_fund_klay.innerHTML = current_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
 
   $(".claimedcnt").html(mintedCnt + "/" + maxCnt);
   $(".mintinnfee").html("[ " + fee_gwei + " KLAY ]");
@@ -346,15 +341,8 @@ async function getTotalSupply() {
 
 async function getTotalSupplyNoWallet() {
   // clearInterval(totalsupplyInterval);
-  let cweb3 = new Web3(
-    new Web3.providers.HttpProvider(
-      "https://public-node-api.klaytnapi.com/v1/cypress"
-    )
-  );
-  let cnftContract = new cweb3.eth.Contract(
-    nftAbi[chainId],
-    nftAddress[chainId]
-  );
+  let cweb3 = new Web3(new Web3.providers.HttpProvider("https://public-node-api.klaytnapi.com/v1/cypress"));
+  let cnftContract = new cweb3.eth.Contract(nftAbi[chainId], nftAddress[chainId]);
 
   let maxCnt = 0;
   let mintedCnt = 0;
@@ -388,10 +376,8 @@ async function getTotalSupplyNoWallet() {
 
   target_fund_cnt.innerText = maxCnt;
   current_fund_cnt.innerText = mintedCnt;
-  target_fund_klay.innerHTML =
-    target_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
-  current_fund_klay.innerHTML =
-    current_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
+  target_fund_klay.innerHTML = target_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
+  current_fund_klay.innerHTML = current_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
 
   $(".claimedcnt").html(mintedCnt + "/" + maxCnt);
   $(".mintinnfee").html("[ " + fee_gwei + " KLAY ]");
@@ -667,9 +653,7 @@ async function setMyCardCnt(_tokenIds) {
     const fee_wei = await nftContract.methods.MINTING_FEE().call();
     let my_fund_cnt = document.getElementById("my_fund_cnt");
     let my_fund_klay = document.getElementById("my_fund_klay");
-    const my_fund_klay_wei = ethers.BigNumber.from(fee_wei).mul(
-      _tokenIds.length
-    );
+    const my_fund_klay_wei = ethers.BigNumber.from(fee_wei).mul(_tokenIds.length);
 
     let my_fund_klay_gwei = ethers.utils.formatEther(my_fund_klay_wei);
 
@@ -679,8 +663,7 @@ async function setMyCardCnt(_tokenIds) {
     myTokenCnt = gencurrencyFormat(myTokenCnt);
 
     my_fund_cnt.innerText = myTokenCnt;
-    my_fund_klay.innerHTML =
-      my_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
+    my_fund_klay.innerHTML = my_fund_klay_gwei + '<span style="font-size: 14px"> KLAY</span>';
   } else {
     myNftCount = 0;
     my_fund_cnt.innerText = 0;
@@ -784,12 +767,7 @@ showCardList = async (kind, tokenIds) => {
       // console.log("arr[i].image => ", arr[i].image);
 
       label.innerHTML = "";
-      img_url =
-        '<label class="card-img" onclick="viewInOpensea(' +
-        arr[i].tokenId +
-        ')"/><img width="200" height="200" type="image/svg+xml" src="' +
-        arr[i].image +
-        '"/>';
+      img_url = '<label class="card-img" onclick="viewInOpensea(' + arr[i].tokenId + ')"/><img width="200" height="200" type="image/svg+xml" src="' + arr[i].image + '"/>';
 
       // console.log("img_url => ", img_url);
 
@@ -809,9 +787,7 @@ showCardList = async (kind, tokenIds) => {
 
         descriptionBox.appendChild(checkBox);
         document.getElementById("my_card_cnt").innerHTML =
-          '<p style="margin-bottom: 5px;font-size: 14px; color: #818181;">( ' +
-          checkInTokenIdList.length +
-          " / 20 ) 트랜잭션 당 최대 20장 까지 가능.</p>";
+          '<p style="margin-bottom: 5px;font-size: 14px; color: #818181;">( ' + checkInTokenIdList.length + " / 20 ) 트랜잭션 당 최대 20장 까지 가능.</p>";
       } else {
         $(".mycardscnt").html("내 NFT : " + arr.length);
       }
@@ -845,10 +821,7 @@ showCardList = async (kind, tokenIds) => {
         target.disabled = false;
       }
     }
-    document.getElementById("my_card_cnt").innerHTML =
-      '<p style="margin-bottom: 5px;font-size: 14px; color: #818181;">( ' +
-      checkInTokenIdList.length +
-      " / 20 ) 트랜잭션 당 최대 20장 까지 가능.</p>";
+    document.getElementById("my_card_cnt").innerHTML = '<p style="margin-bottom: 5px;font-size: 14px; color: #818181;">( ' + checkInTokenIdList.length + " / 20 ) 트랜잭션 당 최대 20장 까지 가능.</p>";
   };
 
   $("#minting-loading").hide();
@@ -970,20 +943,12 @@ function makeRefundDesc() {
   if (myNftCount == 0) {
     refund_desc_str = refund_desc_str + "환불 할 NFT가 없습니다.<br/><br/>";
   } else {
-    refund_desc_str =
-      refund_desc_str +
-      "환불 할 NFT 를 선택 후 NFT 환불 버튼을 눌러주세요.<br/><br/>";
+    refund_desc_str = refund_desc_str + "환불 할 NFT 를 선택 후 NFT 환불 버튼을 눌러주세요.<br/><br/>";
   }
-  refund_desc_str =
-    refund_desc_str + "국보Dao NFT는 환불 되어도 소유권은 그대로 유지되며";
+  refund_desc_str = refund_desc_str + "국보Dao NFT는 환불 되어도 소유권은 그대로 유지되며";
 
-  refund_desc_str =
-    refund_desc_str +
-    '<span><a target="_blank" style="text-decoration: underline;color: var(----primary-color); font-size:18px;" href="';
-  refund_desc_str =
-    refund_desc_str +
-    getMyOpenSeaUrl(chainId, myAddr) +
-    '"><strong> Opensea 에서 확인</strong></a> </span>할 수 있습니다.';
+  refund_desc_str = refund_desc_str + '<span><a target="_blank" style="text-decoration: underline;color: var(----primary-color); font-size:18px;" href="';
+  refund_desc_str = refund_desc_str + getMyOpenSeaUrl(chainId, myAddr) + '"><strong> Opensea 에서 확인</strong></a> </span>할 수 있습니다.';
   refund_desc.innerHTML = refund_desc_str;
 }
 function gencurrencyFormat(_val) {
@@ -1039,34 +1004,26 @@ function makeEventPopup() {
 function setEventContent(eventContents, contentidx) {
   // console.log("contentidx =>", contentidx);
 
-  document.getElementById("event_count").innerText =
-    contentidx + 1 + " / " + eventContents.length;
+  document.getElementById("event_count").innerText = contentidx + 1 + " / " + eventContents.length;
   // document.getElementById("event_company").innerText = events[i].company;
 
   $("#event_company").hide();
   // Logo image
   if (eventContents[contentidx].logo.length > 0) {
-    document.getElementById("event_company_logo").innerHTML =
-      '<img height="50" style=" margin-top:10px;" src="./event/asset/' +
-      eventContents[contentidx].logo +
-      '"></img>';
+    document.getElementById("event_company_logo").innerHTML = '<img height="50" style=" margin-top:10px;" src="./event/asset/' + eventContents[contentidx].logo + '"></img>';
   } else {
     document.getElementById("event_company_logo").innerHTML = "";
   }
   // event title
   if (eventContents[contentidx].title.length > 0) {
-    document.getElementById("event_title").innerHTML =
-      '<p class="event-p" style="text-align:center; margin-top:10px; "><strong>' +
-      eventContents[contentidx].title +
-      "</strong></p>";
+    document.getElementById("event_title").innerHTML = '<p class="event-p" style="text-align:center; margin-top:10px; "><strong>' + eventContents[contentidx].title + "</strong></p>";
   } else {
     document.getElementById("event_title").innerHTML = "";
   }
 
   // event simple content
   if (eventContents[contentidx].simplecontent.length > 0) {
-    document.getElementById("event_content").innerHTML =
-      '<p class="event-p" >' + eventContents[contentidx].simplecontent + "</p>";
+    document.getElementById("event_content").innerHTML = '<p class="event-p" >' + eventContents[contentidx].simplecontent + "</p>";
   } else {
     document.getElementById("event_content").innerHTML = "";
   }
@@ -1074,10 +1031,7 @@ function setEventContent(eventContents, contentidx) {
   // event content image
   if (eventContents[contentidx].contentimg.length > 0) {
     document.getElementById("event_img").style.width = "320px";
-    document.getElementById("event_img").innerHTML =
-      '<img width="320px" src="./event/asset/' +
-      eventContents[contentidx].contentimg +
-      '"></img>';
+    document.getElementById("event_img").innerHTML = '<img width="320px" src="./event/asset/' + eventContents[contentidx].contentimg + '"></img>';
   } else {
     document.getElementById("event_img").style.width = "0";
     document.getElementById("event_img").style.height = "0";
@@ -1090,9 +1044,7 @@ function setEventContent(eventContents, contentidx) {
     // <button class="button-text-large" style="font-size: 16px">이벤트 자세히보</button>
 
     document.getElementById("event_link").innerHTML =
-      '<a target="_blank" class="event_detail_link button-text-large" style="font-size: 16px; text-decoration:none;" href="' +
-      eventContents[contentidx].linkurl +
-      '" >이벤트 페이지로 이동</a>';
+      '<a target="_blank" class="event_detail_link button-text-large" style="font-size: 16px; text-decoration:none;" href="' + eventContents[contentidx].linkurl + '" >이벤트 페이지로 이동</a>';
   } else {
     document.getElementById("event_link").innerHTML = "";
   }
